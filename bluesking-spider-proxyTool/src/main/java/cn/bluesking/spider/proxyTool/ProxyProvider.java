@@ -67,6 +67,14 @@ public class ProxyProvider {
 	}
 	
 	/**
+	 * 获取代理队列元素个数
+	 * @return
+	 */
+	public static int size() {
+		return proxyQueue.size();
+	}
+	
+	/**
 	 * 往队列末尾代理对象
 	 * @param proxy [Proxy]待插入代理对象
 	 */
@@ -155,6 +163,9 @@ public class ProxyProvider {
 	/** 管理代理爬取线程池 */
 	private static List<Thread> threadPool = new ArrayList<Thread>();
 	
+	/** 代理队列最大代理数 */
+	private static final int QUEUE_MAX_SIZE = 250;
+	
 	/**
 	 * 返回一个执行代理获取对象方法的线程
 	 * @param getter [ProxyGetter]代理获取对象
@@ -164,7 +175,11 @@ public class ProxyProvider {
 		Thread thread =  new Thread() {
 			@Override
 			public void run() {
-				getter.getProxys(); // 执行代理爬取任务
+				if(proxyQueue.size() < QUEUE_MAX_SIZE) {
+					getter.getProxys(); // 执行代理爬取任务
+				}
+				// 从线程队列中移除
+				threadPool.remove(this);
 			}
 		};
 		threadPool.add(thread);

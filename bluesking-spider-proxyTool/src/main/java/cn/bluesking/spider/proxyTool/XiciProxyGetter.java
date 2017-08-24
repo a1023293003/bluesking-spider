@@ -9,10 +9,17 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.bluesking.spider.commons.util.CaseUtil;
 import cn.bluesking.spider.commons.util.HttpUtil;
 import cn.bluesking.spider.commons.util.RegexUtil;
 import cn.bluesking.spider.proxyTool.helper.ProxyHelper;
 
+/**
+ * 西刺代理获取器
+ * 
+ * @author 随心
+ *
+ */
 public class XiciProxyGetter implements ProxyGetter {
 
 	/** slf4j日志配置 */
@@ -33,7 +40,12 @@ public class XiciProxyGetter implements ProxyGetter {
 			String content = HttpUtil.httpBrowserGet("http://www.xicidaili.com/nn/");
 			List<String> ips = RegexUtil.regexString(content, "<td>(\\d+?(.\\d+?){3})</td>");
 			List<String> ports = RegexUtil.regexString(content, "<td>(\\d+?)</td>");
-			return ProxyHelper.getValidProxy(ips, ports);
+			for(int i = 0; i < ips.size(); i++) {
+				ProxyProvider.add(new Proxy(Proxy.Type.HTTP, 
+					new InetSocketAddress(ips.get(i), CaseUtil.caseInt(ports.get(i), 8080))));
+			}
+			return null;
+//			return ProxyHelper.getValidProxy(ips, ports);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

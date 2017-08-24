@@ -19,6 +19,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!--指定Maven用什么编码来呈现站点的HTML文件 -->
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<bluesking.spider.mobile.lagou.version>0.0.1-SNAPSHOT</bluesking.spider.mobile.lagou.version>
 		<bluesking.spider.commons.version>0.0.1-SNAPSHOT</bluesking.spider.commons.version>
 		<bluesking.spider.proxyTool.version>0.0.1-SNAPSHOT</bluesking.spider.proxyTool.version>
 		<junit.version>4.12</junit.version>
@@ -41,6 +42,12 @@
 	<!-- 声明子项目可能用到的依赖 -->
 	<dependencyManagement>
 		<dependencies>
+			<!-- 拉钩爬虫 -->
+			<dependency>
+				<groupId>cn.bluesking</groupId>
+				<artifactId>bluesking-spider-mobile-lagou</artifactId>
+				<version>${bluesking.spider.mobile.lagou.version}</version>
+			</dependency>
 			<!-- 公共工具模块 -->
 			<dependency>
 				<groupId>cn.bluesking</groupId>
