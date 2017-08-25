@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
 import java.util.HashMap;
@@ -187,8 +188,7 @@ public final class HttpUtil {
 			// 读取请求响应数据并返回
 			return readResponseData(conn, code); // 可能出现读取超时异常
 		} catch (IOException e) {
-			_LOG.error("获取响应页面内容失败！" + e.getMessage());
-			throw e;
+			throw new IOException("获取响应页面内容失败！" + e.getMessage(), e);
 		} finally {
 			// 关闭连接请求
 			if(conn != null) { conn.disconnect(); }

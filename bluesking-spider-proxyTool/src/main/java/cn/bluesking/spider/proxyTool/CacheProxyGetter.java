@@ -27,7 +27,7 @@ public class CacheProxyGetter implements ProxyGetter {
 	private static final Logger _LOG = LoggerFactory.getLogger(CacheProxyGetter.class);
 	
 	/** 爬取间隔时间 */
-	private Long interval = 5 * 60 * 1000L;
+	private Long interval = 4 * 60 * 1000L;
 	
 	/** 用于存储可用代理的阻塞队列 */
 	private static final BlockingQueue<Proxy> proxyQueue = new LinkedBlockingQueue<Proxy>();

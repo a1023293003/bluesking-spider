@@ -73,9 +73,8 @@ public class LagouSpider {
 		int lastPageNo = (int) Math.ceil(totalSize / 15.0);
 		LagouThreadManager manager = new LagouThreadManager(THREAD_NUM, lastPageNo, urlPrefix, 5);
 		// 结束标记全为true
-		while(!manager.isEnd()) {
+		while(manager.isNotEnd()) {
 			Thread.yield();
-			
 		}
 		ProxyProvider.interrupt();
 		System.err.println("爬取结束！");

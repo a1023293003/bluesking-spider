@@ -130,12 +130,12 @@ public class ProxyProvider {
 		if(getterSize > 0) {
 			// 初始化
 			init();
+			// 先把任务执行一遍
+			for(ProxyGetter getter : getterList) {
+				newGetterThread(getter).start();
+			}
 			// 新开一个进程定时执行代理爬取任务
 			if(timerThread == null || !timerThread.isAlive()) {
-				// 先把任务执行一遍
-				for(ProxyGetter getter : getterList) {
-					newGetterThread(getter).start();
-				}
 				// 新开一个线程作为定时器
 				timerThread = new Thread() {
 					public void run() {
