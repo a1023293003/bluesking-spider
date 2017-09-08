@@ -8,6 +8,14 @@ import org.apache.ibatis.annotations.Param;
 public interface ProxyInfoMapper {
 
 	/**
+	 * 抽取出复用率最高的前num个代理
+	 *
+	 * @param num [Integer]抽取代理数
+	 * @return [List<ProxyInfo>]复用率高的代理集合
+	 */
+	List<ProxyInfo> selectTopProxys(@Param("num") Integer num);
+	
+	/**
 	 * 统计符合自定义条件的数据个数
 	 *
 	 * @param example [ProxyInfoExample]自定义条件

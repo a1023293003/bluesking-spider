@@ -10,7 +10,7 @@
 		<result column="salary" property="salary" jdbcType="VARCHAR" />
 		<result column="min_salary" property="minSalary" jdbcType="INTEGER" />
 		<result column="max_salary" property="maxSalary" jdbcType="INTEGER" />
-		<result column="companyId" property="companyId" jdbcType="INTEGER" />
+		<result column="company_id" property="companyId" jdbcType="INTEGER" />
 		<result column="company_name" property="companyName" jdbcType="VARCHAR" />
 		<result column="company_full_name" property="companyFullName" jdbcType="VARCHAR" />
 		<result column="position_advantage" property="positionAdvantage" jdbcType="VARCHAR" />
@@ -22,6 +22,7 @@
 		<result column="work_year" property="workYear" jdbcType="VARCHAR" />
 		<result column="position_description" property="positionDescription" jdbcType="CLOB" />
 		<result column="position_address" property="positionAddress" jdbcType="VARCHAR" />
+		<result column="key_word" property="keyWord" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<!-- 条件从句 -->
@@ -113,7 +114,7 @@
 		salary,
 		min_salary,
 		max_salary,
-		companyId,
+		company_id,
 		company_name,
 		company_full_name,
 		position_advantage,
@@ -124,7 +125,8 @@
 		education,
 		work_year,
 		position_description,
-		position_address
+		position_address,
+		key_word
 	</sql>
 	<!-- 统计符合自定义条件的数据个数 -->
 	<select id="countByExample" parameterType="cn.bluesking.spider.commons.entity.MobileLagouPositionExample"
@@ -164,7 +166,7 @@
 			salary,
 			min_salary,
 			max_salary,
-			companyId,
+			company_id,
 			company_name,
 			company_full_name,
 			position_advantage,
@@ -175,7 +177,8 @@
 			education,
 			work_year,
 			position_description,
-			position_address
+			position_address,
+			key_word
 		)
 		values (
 			#{positionId, jdbcType=INTEGER},
@@ -195,7 +198,8 @@
 			#{education, jdbcType=VARCHAR},
 			#{workYear, jdbcType=VARCHAR},
 			#{positionDescription, jdbcType=CLOB},
-			#{positionAddress, jdbcType=VARCHAR}
+			#{positionAddress, jdbcType=VARCHAR},
+			#{keyWord, jdbcType=VARCHAR}
 		)
 	</insert>
 
@@ -206,10 +210,10 @@
 		<!-- 插入属性 -->
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="positionId != null">
-				positionId,
+				position_id,
 			</if>
 			<if test="positionName != null">
-				positionName,
+				position_name,
 			</if>
 			<if test="city != null">
 				city,
@@ -218,28 +222,28 @@
 				salary,
 			</if>
 			<if test="minSalary != null">
-				minSalary,
+				min_salary,
 			</if>
 			<if test="maxSalary != null">
-				maxSalary,
+				max_salary,
 			</if>
 			<if test="companyId != null">
-				companyId,
+				company_id,
 			</if>
 			<if test="companyName != null">
-				companyName,
+				company_name,
 			</if>
 			<if test="companyFullName != null">
-				companyFullName,
+				company_full_name,
 			</if>
 			<if test="positionAdvantage != null">
-				positionAdvantage,
+				position_advantage,
 			</if>
 			<if test="district != null">
 				district,
 			</if>
 			<if test="bizArea != null">
-				bizArea,
+				biz_area,
 			</if>
 			<if test="lng != null">
 				lng,
@@ -251,13 +255,16 @@
 				education,
 			</if>
 			<if test="workYear != null">
-				workYear,
+				work_year,
 			</if>
 			<if test="positionDescription != null">
-				positionDescription,
+				position_description,
 			</if>
 			<if test="positionAddress != null">
-				positionAddress,
+				position_address,
+			</if>
+			<if test="keyWord != null">
+				key_word,
 			</if>
 		</trim>
 		<!-- 插入内容 -->
@@ -316,6 +323,9 @@
 			<if test="positionAddress != null">
 				#{positionAddress, jdbcType=VARCHAR},
 			</if>
+			<if test="keyWord != null">
+				#{keyWord, jdbcType=VARCHAR},
+			</if>
 		</trim>
 	</insert>
 
@@ -356,10 +366,10 @@
 		<!-- 修改属性，可修改主键 -->
 		<set>
 			<if test="record.positionId != null">
-				positionId = #{record.positionId, jdbcType=INTEGER},
+				position_id = #{record.positionId, jdbcType=INTEGER},
 			</if>
 			<if test="record.positionName != null">
-				positionName = #{record.positionName, jdbcType=VARCHAR},
+				position_name = #{record.positionName, jdbcType=VARCHAR},
 			</if>
 			<if test="record.city != null">
 				city = #{record.city, jdbcType=VARCHAR},
@@ -368,28 +378,28 @@
 				salary = #{record.salary, jdbcType=VARCHAR},
 			</if>
 			<if test="record.minSalary != null">
-				minSalary = #{record.minSalary, jdbcType=INTEGER},
+				min_salary = #{record.minSalary, jdbcType=INTEGER},
 			</if>
 			<if test="record.maxSalary != null">
-				maxSalary = #{record.maxSalary, jdbcType=INTEGER},
+				max_salary = #{record.maxSalary, jdbcType=INTEGER},
 			</if>
 			<if test="record.companyId != null">
-				companyId = #{record.companyId, jdbcType=INTEGER},
+				company_id = #{record.companyId, jdbcType=INTEGER},
 			</if>
 			<if test="record.companyName != null">
-				companyName = #{record.companyName, jdbcType=VARCHAR},
+				company_name = #{record.companyName, jdbcType=VARCHAR},
 			</if>
 			<if test="record.companyFullName != null">
-				companyFullName = #{record.companyFullName, jdbcType=VARCHAR},
+				company_full_name = #{record.companyFullName, jdbcType=VARCHAR},
 			</if>
 			<if test="record.positionAdvantage != null">
-				positionAdvantage = #{record.positionAdvantage, jdbcType=VARCHAR},
+				position_advantage = #{record.positionAdvantage, jdbcType=VARCHAR},
 			</if>
 			<if test="record.district != null">
 				district = #{record.district, jdbcType=VARCHAR},
 			</if>
 			<if test="record.bizArea != null">
-				bizArea = #{record.bizArea, jdbcType=VARCHAR},
+				biz_area = #{record.bizArea, jdbcType=VARCHAR},
 			</if>
 			<if test="record.lng != null">
 				lng = #{record.lng, jdbcType=VARCHAR},
@@ -401,13 +411,16 @@
 				education = #{record.education, jdbcType=VARCHAR},
 			</if>
 			<if test="record.workYear != null">
-				workYear = #{record.workYear, jdbcType=VARCHAR},
+				work_year = #{record.workYear, jdbcType=VARCHAR},
 			</if>
 			<if test="record.positionDescription != null">
-				positionDescription = #{record.positionDescription, jdbcType=CLOB},
+				position_description = #{record.positionDescription, jdbcType=CLOB},
 			</if>
 			<if test="record.positionAddress != null">
-				positionAddress = #{record.positionAddress, jdbcType=VARCHAR},
+				position_address = #{record.positionAddress, jdbcType=VARCHAR},
+			</if>
+			<if test="record.keyWord != null">
+				key_word = #{record.keyWord, jdbcType=VARCHAR},
 			</if>
 		</set>
 		<!-- 自定义条件 -->
@@ -421,24 +434,25 @@
 		update mobile_lagou_position
 		<!-- 修改属性，可修改主键 -->
 		set
-		positionId = #{positionId, jdbcType=INTEGER},
-		positionName = #{positionName, jdbcType=VARCHAR},
+		position_id = #{positionId, jdbcType=INTEGER},
+		position_name = #{positionName, jdbcType=VARCHAR},
 		city = #{city, jdbcType=VARCHAR},
 		salary = #{salary, jdbcType=VARCHAR},
-		minSalary = #{minSalary, jdbcType=INTEGER},
-		maxSalary = #{maxSalary, jdbcType=INTEGER},
-		companyId = #{companyId, jdbcType=INTEGER},
-		companyName = #{companyName, jdbcType=VARCHAR},
-		companyFullName = #{companyFullName, jdbcType=VARCHAR},
-		positionAdvantage = #{positionAdvantage, jdbcType=VARCHAR},
+		min_salary = #{minSalary, jdbcType=INTEGER},
+		max_salary = #{maxSalary, jdbcType=INTEGER},
+		company_id = #{companyId, jdbcType=INTEGER},
+		company_name = #{companyName, jdbcType=VARCHAR},
+		company_full_name = #{companyFullName, jdbcType=VARCHAR},
+		position_advantage = #{positionAdvantage, jdbcType=VARCHAR},
 		district = #{district, jdbcType=VARCHAR},
-		bizArea = #{bizArea, jdbcType=VARCHAR},
+		biz_area = #{bizArea, jdbcType=VARCHAR},
 		lng = #{lng, jdbcType=VARCHAR},
 		lat = #{lat, jdbcType=VARCHAR},
 		education = #{education, jdbcType=VARCHAR},
-		workYear = #{workYear, jdbcType=VARCHAR},
-		positionDescription = #{positionDescription, jdbcType=CLOB},
-		positionAddress = #{positionAddress, jdbcType=VARCHAR}
+		work_year = #{workYear, jdbcType=VARCHAR},
+		position_description = #{positionDescription, jdbcType=CLOB},
+		position_address = #{positionAddress, jdbcType=VARCHAR},
+		key_word = #{keyWord, jdbcType=VARCHAR}
 		<!-- 自定义条件 -->
 		<if test="_parameter != null">
 			<include refid="Update_By_Example_Where_Clause" />
@@ -451,7 +465,7 @@
 		<!-- 修改属性，不可以修改主键 -->
 		<set>
 			<if test="positionName != null">
-				positionName = #{positionName, jdbcType=VARCHAR},
+				position_name = #{positionName, jdbcType=VARCHAR},
 			</if>
 			<if test="city != null">
 				city = #{city, jdbcType=VARCHAR},
@@ -460,28 +474,28 @@
 				salary = #{salary, jdbcType=VARCHAR},
 			</if>
 			<if test="minSalary != null">
-				minSalary = #{minSalary, jdbcType=INTEGER},
+				min_salary = #{minSalary, jdbcType=INTEGER},
 			</if>
 			<if test="maxSalary != null">
-				maxSalary = #{maxSalary, jdbcType=INTEGER},
+				max_salary = #{maxSalary, jdbcType=INTEGER},
 			</if>
 			<if test="companyId != null">
-				companyId = #{companyId, jdbcType=INTEGER},
+				company_id = #{companyId, jdbcType=INTEGER},
 			</if>
 			<if test="companyName != null">
-				companyName = #{companyName, jdbcType=VARCHAR},
+				company_name = #{companyName, jdbcType=VARCHAR},
 			</if>
 			<if test="companyFullName != null">
-				companyFullName = #{companyFullName, jdbcType=VARCHAR},
+				company_full_name = #{companyFullName, jdbcType=VARCHAR},
 			</if>
 			<if test="positionAdvantage != null">
-				positionAdvantage = #{positionAdvantage, jdbcType=VARCHAR},
+				position_advantage = #{positionAdvantage, jdbcType=VARCHAR},
 			</if>
 			<if test="district != null">
 				district = #{district, jdbcType=VARCHAR},
 			</if>
 			<if test="bizArea != null">
-				bizArea = #{bizArea, jdbcType=VARCHAR},
+				biz_area = #{bizArea, jdbcType=VARCHAR},
 			</if>
 			<if test="lng != null">
 				lng = #{lng, jdbcType=VARCHAR},
@@ -493,13 +507,16 @@
 				education = #{education, jdbcType=VARCHAR},
 			</if>
 			<if test="workYear != null">
-				workYear = #{workYear, jdbcType=VARCHAR},
+				work_year = #{workYear, jdbcType=VARCHAR},
 			</if>
 			<if test="positionDescription != null">
-				positionDescription = #{positionDescription, jdbcType=CLOB},
+				position_description = #{positionDescription, jdbcType=CLOB},
 			</if>
 			<if test="positionAddress != null">
-				positionAddress = #{positionAddress, jdbcType=VARCHAR},
+				position_address = #{positionAddress, jdbcType=VARCHAR},
+			</if>
+			<if test="keyWord != null">
+				key_word = #{keyWord, jdbcType=VARCHAR},
 			</if>
 		</set>
 		<!-- 主键作为条件 -->
@@ -512,23 +529,24 @@
 		update mobile_lagou_position
 		<!-- 修改属性，不可以修改主键 -->
 		set
-		positionName = #{positionName, jdbcType=VARCHAR},
+		position_name = #{positionName, jdbcType=VARCHAR},
 		city = #{city, jdbcType=VARCHAR},
 		salary = #{salary, jdbcType=VARCHAR},
-		minSalary = #{minSalary, jdbcType=INTEGER},
-		maxSalary = #{maxSalary, jdbcType=INTEGER},
-		companyId = #{companyId, jdbcType=INTEGER},
-		companyName = #{companyName, jdbcType=VARCHAR},
-		companyFullName = #{companyFullName, jdbcType=VARCHAR},
-		positionAdvantage = #{positionAdvantage, jdbcType=VARCHAR},
+		min_salary = #{minSalary, jdbcType=INTEGER},
+		max_salary = #{maxSalary, jdbcType=INTEGER},
+		company_id = #{companyId, jdbcType=INTEGER},
+		company_name = #{companyName, jdbcType=VARCHAR},
+		company_full_name = #{companyFullName, jdbcType=VARCHAR},
+		position_advantage = #{positionAdvantage, jdbcType=VARCHAR},
 		district = #{district, jdbcType=VARCHAR},
-		bizArea = #{bizArea, jdbcType=VARCHAR},
+		biz_area = #{bizArea, jdbcType=VARCHAR},
 		lng = #{lng, jdbcType=VARCHAR},
 		lat = #{lat, jdbcType=VARCHAR},
 		education = #{education, jdbcType=VARCHAR},
-		workYear = #{workYear, jdbcType=VARCHAR},
-		positionDescription = #{positionDescription, jdbcType=CLOB},
-		positionAddress = #{positionAddress, jdbcType=VARCHAR}
+		work_year = #{workYear, jdbcType=VARCHAR},
+		position_description = #{positionDescription, jdbcType=CLOB},
+		position_address = #{positionAddress, jdbcType=VARCHAR},
+		key_word = #{keyWord, jdbcType=VARCHAR}
 		<!-- 主键作为条件 -->
 		where
 		position_id = #{positionId, jdbcType=INTEGER} 

@@ -39,6 +39,9 @@ public class LagouThreadManager {
 	/** 线程优先度 */
 	private int priority = 5;
 	
+	/** 关键字 */
+	private String keyWord = null;
+	
 	/** 职位id列表 */
 	private List<Integer> positionIdList = null;
 	
@@ -51,16 +54,18 @@ public class LagouThreadManager {
 		MobileLagouPositionMapper mapper = session.getMapper(MobileLagouPositionMapper.class);
 		// 查询数据库数据
 		List<MobileLagouPosition> positions = mapper.selectByExample(null);
-		positionIdList = new ArrayList<Integer>(positions.size());
+		// 创建id数组和id标记数组
+		positionIdList = new ArrayList<Integer>(positions.size() + 100);
 		for(MobileLagouPosition pos : positions) {
 			positionIdList.add(pos.getPositionId());
 		}
+		session.commit();
 		session.close();
 		// 创建线程数组和标记数组
 		threadArray = new LagouSpiderThread[threadNum];
 		flag = new boolean[threadNum];
 		// 初始化标记数组
-		ArrayUtil.setAllValue(flag, false);
+		ArrayUtil.setDefaultValues(flag, false);
 		// 初始化进程数组并启动线程
 		for(int i = 0; i < threadNum; i ++) {
 			threadArray[i] = new LagouSpiderThread(i + 1, i, this);
@@ -123,15 +128,23 @@ public class LagouThreadManager {
 	 * @param threadNum [int]最大线程数量
 	 * @param lastPageNo [int]最大爬取页数
 	 * @param urlPrefix [String]url前缀
+	 * @param keyWord [String]关键字
+	 * @param city [String]城市
 	 * @param priority [int]线程优先度
 	 */
-	public LagouThreadManager(int threadNum, int lastPageNo, String urlPrefix, int priority) {
+	public LagouThreadManager(int threadNum, int lastPageNo, 
+			String urlPrefix, String keyWord, int priority) {
 		this.threadNum = threadNum;
 		this.lastPage_no = lastPageNo;
 		this.urlPrefix = urlPrefix;
+		this.keyWord = keyWord;
 		this.priority = priority;
 		// 初始化参数
 		this.init();
+	}
+	
+	public String getKeyWord() {
+		return keyWord;
 	}
 	
 	public synchronized void addPositionId(int id) {

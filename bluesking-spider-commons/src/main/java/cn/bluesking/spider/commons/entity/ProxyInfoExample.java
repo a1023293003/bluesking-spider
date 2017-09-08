@@ -684,6 +684,125 @@ public class ProxyInfoExample {
 			addCriterion("port not between", value1, value2, "port");
 			return (Criteria) this;
 		}
+		/**
+		 * status字段为null
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andStatusIsNull() {
+			addCriterion("status is null");
+			return (Criteria) this;
+		}
+
+		/**
+		 * status字段为不为null
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andStatusIsNotNull() {
+			addCriterion("status is not null");
+			return (Criteria) this;
+		}
+
+		/**
+		 * status等于传入值
+		 * @param value [Integer]传入值
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andStatusEqualTo(Integer value) {
+			addCriterion("status =", value, "status");
+			return (Criteria) this;
+		}
+
+		/**
+		 * status不等于传入值
+		 * @param value [Integer]传入值
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andStatusNotEqualTo(Integer value) {
+			addCriterion("status <>", value, "status");
+			return (Criteria) this;
+		}
+
+		/**
+		 * status大于传入值
+		 * @param value [Integer]传入值
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andStatusGreaterThan(Integer value) {
+			addCriterion("status >", value, "status");
+			return (Criteria) this;
+		}
+
+		/**
+		 * status大于等于传入值
+		 * @param value [Integer]传入值
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
+			addCriterion("status >=", value, "status");
+			return (Criteria) this;
+		}
+
+		/**
+		 * status小于传入值
+		 * @param value [Integer]传入值
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andStatusLessThan(Integer value) {
+			addCriterion("status <", value, "status");
+			return (Criteria) this;
+		}
+
+		/**
+		 * status小于等于传入值
+		 * @param value [Integer]传入值
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andStatusLessThanOrEqualTo(Integer value) {
+			addCriterion("status <=", value, "status");
+			return (Criteria) this;
+		}
+
+		/**
+		 * status在传入值之中
+		 * @param value [List<Integer>]传入值
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andStatusIn(List<Integer> values) {
+			addCriterion("status in", values, "status");
+			return (Criteria) this;
+		}
+
+		/**
+		 * status不在传入值之中
+		 * @param value [List<Integer>]传入值
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andStatusNotIn(List<Integer> values) {
+			addCriterion("status not in", values, "status");
+			return (Criteria) this;
+		}
+
+		/**
+		 * status在传入值之间
+		 * @param value1 [Integer]传入值1
+		 * @param value2 [Integer]传入值2
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andStatusBetween(Integer value1, Integer value2) {
+			addCriterion("status between", value1, value2, "status");
+			return (Criteria) this;
+		}
+
+		/**
+		 * status不在传入值之间
+		 * @param value1 [Integer]传入值1
+		 * @param value2 [Integer]传入值2
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andStatusNotBetween(Integer value1, Integer value2) {
+			addCriterion("status not between", value1, value2, "status");
+			return (Criteria) this;
+		}
 
 	}
 }

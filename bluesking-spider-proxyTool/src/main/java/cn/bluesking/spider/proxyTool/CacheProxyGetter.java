@@ -67,6 +67,7 @@ public class CacheProxyGetter implements ProxyGetter {
 		ProxyInfo proxyInfo = new ProxyInfo();
 		proxyInfo.setIp(address.getAddress().getHostAddress());
 		proxyInfo.setPort(address.getPort());
+		proxyInfo.setStatus(0);
 		// 把代理ip和端口存入数据库
 		mapper.insert(proxyInfo);
 		session.commit();

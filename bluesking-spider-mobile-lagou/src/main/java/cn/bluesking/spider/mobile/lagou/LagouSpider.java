@@ -1,10 +1,17 @@
 package cn.bluesking.spider.mobile.lagou;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cn.bluesking.spider.commons.entity.MobileLagouPositionExample;
+import cn.bluesking.spider.commons.entity.MobileLagouPositionExample.Criteria;
+import cn.bluesking.spider.commons.helper.MybatisHelper;
+import cn.bluesking.spider.commons.mapper.MobileLagouPositionMapper;
 import cn.bluesking.spider.commons.util.CaseUtil;
 import cn.bluesking.spider.commons.util.CodecUtil;
 import cn.bluesking.spider.commons.util.HttpUtil;
@@ -25,7 +32,13 @@ public class LagouSpider {
 	private static final Logger _LOG = LoggerFactory.getLogger(LagouSpider.class);
 	
 	public static void main(String[] args) throws IOException {
-		getJobs("广州", "Java");
+		String[] cities = {"深圳"};
+		String[] keyWords = {"Java", "Web前端"};
+		for(String keyWord : keyWords) {
+			for(String city : cities) {
+				getJobs(city, keyWord);
+			}
+		}
 	}
 	
 	/** 线程数 */
@@ -34,14 +47,14 @@ public class LagouSpider {
 	/**
 	 * 获取数据总数
 	 * @param city [String]城市
-	 * @param keyword [String]关键字
+	 * @param keyWord [String]关键字
 	 * @return [int]数据总数
 	 * @throws IOException 
 	 */
-	private static int getTotalSize(String city, String keyword) {
+	private static int getTotalSize(String city, String keyWord) {
 		String url = "https://m.lagou.com/search.json?city=" + 
 				CodecUtil.encodeURL(city) + "&positionName=" + 
-				CodecUtil.encodeURL(keyword) + "&pageNo=1&pageSize=15";
+				CodecUtil.encodeURL(keyWord) + "&pageNo=1&pageSize=15";
 		// 发起请求
 		String content = null;
 		try {
@@ -58,20 +71,21 @@ public class LagouSpider {
 	/**
 	 * 爬取拉勾网求职信息数据
 	 * @param city [String]城市
-	 * @param keyword [String]关键字
+	 * @param keyWord [String]关键字
 	 */
-	public static void getJobs(String city, String keyword) {
+	public static void getJobs(String city, String keyWord) {
 		// 开启线程池
 		ProxyProvider.execute();
 		// url前缀
 		String urlPrefix = "https://m.lagou.com/search.json?city=" + 
 				CodecUtil.encodeURL(city) + "&positionName=" + 
-				CodecUtil.encodeURL(keyword);
+				CodecUtil.encodeURL(keyWord);
 		// 获取数据总数
-		int totalSize = getTotalSize(city, keyword);
+		int totalSize = getTotalSize(city, keyWord);
 		_LOG.debug("数据总数为:" + totalSize);
 		int lastPageNo = (int) Math.ceil(totalSize / 15.0);
-		LagouThreadManager manager = new LagouThreadManager(THREAD_NUM, lastPageNo, urlPrefix, 5);
+		LagouThreadManager manager = new LagouThreadManager(
+				THREAD_NUM, lastPageNo, urlPrefix, keyWord, 5);
 		// 结束标记全为true
 		while(manager.isNotEnd()) {
 			Thread.yield();

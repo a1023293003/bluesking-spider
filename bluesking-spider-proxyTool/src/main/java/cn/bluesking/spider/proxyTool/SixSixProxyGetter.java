@@ -24,7 +24,7 @@ public class SixSixProxyGetter implements ProxyGetter {
 	private static final Logger _LOG = LoggerFactory.getLogger(SixSixProxyGetter.class);
 	
 	/** 爬取间隔时间 */
-	private Long interval = 4 * 60 * 1000L;
+	private Long interval = 2 * 60 * 1000L;
 	
 	public Long getInterval() {
 		return interval;
@@ -34,7 +34,7 @@ public class SixSixProxyGetter implements ProxyGetter {
 		try {
 			_LOG.debug("===============进入66代理爬取模块===============");
 			_LOG.debug("当前代理队列中元素总数:[" + ProxyProvider.size() + "]");
-			String content = HttpUtil.httpBrowserGet("http://www.66ip.cn/nmtq.php?getnum=20&isp=0&anonymoustype=0&start=&ports=&export=&ipaddress=&area=1&proxytype=2&api=66ip");
+			String content = HttpUtil.httpBrowserGet("http://www.66ip.cn/nmtq.php?getnum=50&isp=0&anonymoustype=0&start=&ports=&export=&ipaddress=&area=1&proxytype=2&api=66ip");
 			List<String> ips = RegexUtil.regexString(content, "(\\d+?.\\d+?.\\d+?.\\d+?):");
 			List<String> ports = RegexUtil.regexString(content, ":(\\d+?)");
 			for(int i = 0; i < ips.size(); i++) {

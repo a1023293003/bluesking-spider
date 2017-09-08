@@ -93,6 +93,11 @@ public class MobileLagouPosition {
 	 */
 	private String positionAddress = null;
 
+	/**
+	 * 关键字
+	 */
+	private String keyWord = null;
+
 	public void setPositionId(Integer positionId) {
 		this.positionId = positionId;
 	}
@@ -235,6 +240,14 @@ public class MobileLagouPosition {
 
 	public String getPositionAddress() {
 		return this.positionAddress;
+	}
+
+	public void setKeyWord(String keyWord) {
+		this.keyWord = keyWord;
+	}
+
+	public String getKeyWord() {
+		return this.keyWord;
 	}
 
 }

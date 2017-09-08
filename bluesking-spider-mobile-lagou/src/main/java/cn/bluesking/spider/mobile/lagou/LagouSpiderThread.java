@@ -3,7 +3,6 @@ package cn.bluesking.spider.mobile.lagou;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -12,6 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import cn.bluesking.spider.commons.entity.JsonResult;
 import cn.bluesking.spider.commons.entity.MobileLagouPosition;
+import cn.bluesking.spider.commons.entity.MobileLagouPositionExample;
+import cn.bluesking.spider.commons.entity.MobileLagouPositionExample.Criteria;
 import cn.bluesking.spider.commons.helper.MybatisHelper;
 import cn.bluesking.spider.commons.mapper.MobileLagouPositionMapper;
 import cn.bluesking.spider.commons.util.CodecUtil;
@@ -93,13 +94,13 @@ public class LagouSpiderThread extends Thread {
 		if(manager.getFlag(0)) {
 			System.err.print("0:" + manager.getThreadArray()[0].getPageNo());
 		} else {
-			System.err.print(":" + manager.getThreadArray()[0].getPageNo());
+			System.err.print("$:" + manager.getThreadArray()[0].getPageNo());
 		}
 		for(int i = 1; i < manager.getThreadNum(); i ++) {
 			if(manager.getFlag(i)) {
 				System.err.print(", " + i + ":" + manager.getThreadArray()[i].getPageNo());
 			} else {
-				System.err.print(", :" + manager.getThreadArray()[i].getPageNo());
+				System.err.print(", $:" + manager.getThreadArray()[i].getPageNo());
 			}
 		}
 		System.err.println("]");
@@ -124,8 +125,11 @@ public class LagouSpiderThread extends Thread {
 				// 获取数据库会话
 				session = MybatisHelper.getSessionFactory().openSession();
 				MobileLagouPositionMapper mapper = session.getMapper(MobileLagouPositionMapper.class);
+				// 遍历所有职位信息
 				for(MobileLagouPosition pos : result.getResult()) {
 					if(!manager.getPositionIdList().contains(pos.getPositionId())) {
+						// 设置关键字
+						pos.setKeyWord(manager.getKeyWord());
 						// 分析薪资
 						analysisSalary(pos);
 						// 获取职位详细信息
@@ -227,11 +231,9 @@ public class LagouSpiderThread extends Thread {
 			String content = HttpUtil.httpBrowserGet(url, proxy);
 			// 学历
 			position.setEducation(isNotEmpty(RegexUtil.regexAString(content, 
-//					"name=\"keywords\"><meta content=\".+? .+? (.+?) .+?\" name=\"description\">")));
 					"<dd class=\"job_request\">[\\s]*?<p>[\\s]*?<span class=\"salary\">[\\s\\S]+?</span>[\\s]*?<span>/[\\s\\S]+? /</span>[\\s]*?<span>经验[\\s\\S]+? /</span>[\\s]*?<span>([\\s\\S]*?)[及以上]*? /</span>")));
 			// 工作经验
 			position.setWorkYear(isNotEmpty(RegexUtil.regexAString(content, 
-//					"name=\"keywords\"><meta content=\".+? .+? .+? (.+?) .+?\" name=\"description\">")));
 					"<dd class=\"job_request\">[\\s]*?<p>[\\s]*?<span class=\"salary\">[\\s\\S]+?</span>[\\s]*?<span>/[\\s\\S]+? /</span>[\\s]*?<span>经验([\\s\\S]+?) /</span>")));
 			// 职位诱惑
 			position.setPositionAdvantage(RegexUtil.regexAString(content, 
@@ -256,13 +258,75 @@ public class LagouSpiderThread extends Thread {
 					"name=\"positionLng\" value=\"(.*?)\""));
 			// 代理对象存入缓存中
 			CacheProxyGetter.add(backUpProxy);
+			// 城区或商区为空
+//			if(StringUtil.isEmpty(position.getDistrict()) || StringUtil.isEmpty(position.getBizArea())) {
+//				getCompanyDetail(position);
+//			}
 		} catch (IOException e) {
 //			_LOG.error("获取职位 {}详细信息出错！", position.getPositionId());
 			getPositionDetail(position); // 出错之后继续爬取
 		}
 	}
 	
+	/**
+	 * 获得公司详细信息
+	 * @param position
+	 */
+	private static void getCompanyDetail(MobileLagouPosition position) {
+		if(position.getCompanyId() == null) {
+			return;
+		} else {
+			System.err.println("爬取详情的公司编号:[" + position.getCompanyId() + "]");
+			String url = "https://www.lagou.com/gongsi/" + position.getCompanyId() + ".html";
+			try {
+				Proxy proxy = ProxyProvider.poll();
+				// 备份代理对象
+				Proxy backUpProxy = cloneProxy(proxy);
+				String content = HttpUtil.httpBrowserGet(url, proxy);
+				// 城区
+				position.setDistrict(RegexUtil.regexAString(content, 
+						",\"district\":\"([\\s\\S]+?)\","));
+				// 商区
+				position.setBizArea(RegexUtil.regexAString(content, 
+						",\"businessArea\":\"([\\s\\S]+?),"));
+				System.err.println("城区:[" + position.getDistrict() + "] 商区:[" + position.getBizArea() + "]");
+				// 代理对象存入缓存中
+				CacheProxyGetter.add(backUpProxy);
+			} catch (IOException e) {
+				getCompanyDetail(position); // 出错之后继续爬取
+			}
+		}
+	}
+
 	public int getIndex() {
 		return index;
+	}
+	
+	public static void main(String[] args) throws IOException {
+		ProxyProvider.execute();
+		// 获取数据库会话
+		SqlSession session = MybatisHelper.getSessionFactory().openSession();
+		MobileLagouPositionMapper mapper = session.getMapper(MobileLagouPositionMapper.class);
+		MobileLagouPositionExample example = new MobileLagouPositionExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andCityEqualTo("广州");
+		criteria.andDistrictEqualTo("");
+//		criteria = example.or();
+//		criteria.andCityEqualTo("广州");
+//		criteria.andBizAreaEqualTo("");
+		List<MobileLagouPosition> posList = mapper.selectByExample(example);
+		System.out.println("共计" + posList.size() + "条记录");
+		for(MobileLagouPosition pos : posList) {
+			new Thread() {
+				@Override
+				public void run() {
+					getCompanyDetail(pos);
+					synchronized (this) {
+						mapper.updateByPrimaryKey(pos);
+						session.commit();
+					}
+				}
+			}.start();
+		}
 	}
 }

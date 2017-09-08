@@ -1042,122 +1042,122 @@ public class MobileLagouPositionExample {
 			return (Criteria) this;
 		}
 		/**
-		 * companyId字段为null
+		 * company_id字段为null
 		 * @return [Criteria]更新后的criteria
 		 */
 		public Criteria andCompanyIdIsNull() {
-			addCriterion("companyId is null");
+			addCriterion("company_id is null");
 			return (Criteria) this;
 		}
 
 		/**
-		 * companyId字段为不为null
+		 * company_id字段为不为null
 		 * @return [Criteria]更新后的criteria
 		 */
 		public Criteria andCompanyIdIsNotNull() {
-			addCriterion("companyId is not null");
+			addCriterion("company_id is not null");
 			return (Criteria) this;
 		}
 
 		/**
-		 * companyId等于传入值
+		 * company_id等于传入值
 		 * @param value [Integer]传入值
 		 * @return [Criteria]更新后的criteria
 		 */
 		public Criteria andCompanyIdEqualTo(Integer value) {
-			addCriterion("companyId =", value, "companyId");
+			addCriterion("company_id =", value, "companyId");
 			return (Criteria) this;
 		}
 
 		/**
-		 * companyId不等于传入值
+		 * company_id不等于传入值
 		 * @param value [Integer]传入值
 		 * @return [Criteria]更新后的criteria
 		 */
 		public Criteria andCompanyIdNotEqualTo(Integer value) {
-			addCriterion("companyId <>", value, "companyId");
+			addCriterion("company_id <>", value, "companyId");
 			return (Criteria) this;
 		}
 
 		/**
-		 * companyId大于传入值
+		 * company_id大于传入值
 		 * @param value [Integer]传入值
 		 * @return [Criteria]更新后的criteria
 		 */
 		public Criteria andCompanyIdGreaterThan(Integer value) {
-			addCriterion("companyId >", value, "companyId");
+			addCriterion("company_id >", value, "companyId");
 			return (Criteria) this;
 		}
 
 		/**
-		 * companyId大于等于传入值
+		 * company_id大于等于传入值
 		 * @param value [Integer]传入值
 		 * @return [Criteria]更新后的criteria
 		 */
 		public Criteria andCompanyIdGreaterThanOrEqualTo(Integer value) {
-			addCriterion("companyId >=", value, "companyId");
+			addCriterion("company_id >=", value, "companyId");
 			return (Criteria) this;
 		}
 
 		/**
-		 * companyId小于传入值
+		 * company_id小于传入值
 		 * @param value [Integer]传入值
 		 * @return [Criteria]更新后的criteria
 		 */
 		public Criteria andCompanyIdLessThan(Integer value) {
-			addCriterion("companyId <", value, "companyId");
+			addCriterion("company_id <", value, "companyId");
 			return (Criteria) this;
 		}
 
 		/**
-		 * companyId小于等于传入值
+		 * company_id小于等于传入值
 		 * @param value [Integer]传入值
 		 * @return [Criteria]更新后的criteria
 		 */
 		public Criteria andCompanyIdLessThanOrEqualTo(Integer value) {
-			addCriterion("companyId <=", value, "companyId");
+			addCriterion("company_id <=", value, "companyId");
 			return (Criteria) this;
 		}
 
 		/**
-		 * companyId在传入值之中
+		 * company_id在传入值之中
 		 * @param value [List<Integer>]传入值
 		 * @return [Criteria]更新后的criteria
 		 */
 		public Criteria andCompanyIdIn(List<Integer> values) {
-			addCriterion("companyId in", values, "companyId");
+			addCriterion("company_id in", values, "companyId");
 			return (Criteria) this;
 		}
 
 		/**
-		 * companyId不在传入值之中
+		 * company_id不在传入值之中
 		 * @param value [List<Integer>]传入值
 		 * @return [Criteria]更新后的criteria
 		 */
 		public Criteria andCompanyIdNotIn(List<Integer> values) {
-			addCriterion("companyId not in", values, "companyId");
+			addCriterion("company_id not in", values, "companyId");
 			return (Criteria) this;
 		}
 
 		/**
-		 * companyId在传入值之间
+		 * company_id在传入值之间
 		 * @param value1 [Integer]传入值1
 		 * @param value2 [Integer]传入值2
 		 * @return [Criteria]更新后的criteria
 		 */
 		public Criteria andCompanyIdBetween(Integer value1, Integer value2) {
-			addCriterion("companyId between", value1, value2, "companyId");
+			addCriterion("company_id between", value1, value2, "companyId");
 			return (Criteria) this;
 		}
 
 		/**
-		 * companyId不在传入值之间
+		 * company_id不在传入值之间
 		 * @param value1 [Integer]传入值1
 		 * @param value2 [Integer]传入值2
 		 * @return [Criteria]更新后的criteria
 		 */
 		public Criteria andCompanyIdNotBetween(Integer value1, Integer value2) {
-			addCriterion("companyId not between", value1, value2, "companyId");
+			addCriterion("company_id not between", value1, value2, "companyId");
 			return (Criteria) this;
 		}
 		/**
@@ -2467,6 +2467,125 @@ public class MobileLagouPositionExample {
 		 */
 		public Criteria andPositionAddressNotBetween(String value1, String value2) {
 			addCriterion("position_address not between", value1, value2, "positionAddress");
+			return (Criteria) this;
+		}
+		/**
+		 * key_word字段为null
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andKeyWordIsNull() {
+			addCriterion("key_word is null");
+			return (Criteria) this;
+		}
+
+		/**
+		 * key_word字段为不为null
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andKeyWordIsNotNull() {
+			addCriterion("key_word is not null");
+			return (Criteria) this;
+		}
+
+		/**
+		 * key_word等于传入值
+		 * @param value [String]传入值
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andKeyWordEqualTo(String value) {
+			addCriterion("key_word =", value, "keyWord");
+			return (Criteria) this;
+		}
+
+		/**
+		 * key_word不等于传入值
+		 * @param value [String]传入值
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andKeyWordNotEqualTo(String value) {
+			addCriterion("key_word <>", value, "keyWord");
+			return (Criteria) this;
+		}
+
+		/**
+		 * key_word大于传入值
+		 * @param value [String]传入值
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andKeyWordGreaterThan(String value) {
+			addCriterion("key_word >", value, "keyWord");
+			return (Criteria) this;
+		}
+
+		/**
+		 * key_word大于等于传入值
+		 * @param value [String]传入值
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andKeyWordGreaterThanOrEqualTo(String value) {
+			addCriterion("key_word >=", value, "keyWord");
+			return (Criteria) this;
+		}
+
+		/**
+		 * key_word小于传入值
+		 * @param value [String]传入值
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andKeyWordLessThan(String value) {
+			addCriterion("key_word <", value, "keyWord");
+			return (Criteria) this;
+		}
+
+		/**
+		 * key_word小于等于传入值
+		 * @param value [String]传入值
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andKeyWordLessThanOrEqualTo(String value) {
+			addCriterion("key_word <=", value, "keyWord");
+			return (Criteria) this;
+		}
+
+		/**
+		 * key_word在传入值之中
+		 * @param value [List<String>]传入值
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andKeyWordIn(List<String> values) {
+			addCriterion("key_word in", values, "keyWord");
+			return (Criteria) this;
+		}
+
+		/**
+		 * key_word不在传入值之中
+		 * @param value [List<String>]传入值
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andKeyWordNotIn(List<String> values) {
+			addCriterion("key_word not in", values, "keyWord");
+			return (Criteria) this;
+		}
+
+		/**
+		 * key_word在传入值之间
+		 * @param value1 [String]传入值1
+		 * @param value2 [String]传入值2
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andKeyWordBetween(String value1, String value2) {
+			addCriterion("key_word between", value1, value2, "keyWord");
+			return (Criteria) this;
+		}
+
+		/**
+		 * key_word不在传入值之间
+		 * @param value1 [String]传入值1
+		 * @param value2 [String]传入值2
+		 * @return [Criteria]更新后的criteria
+		 */
+		public Criteria andKeyWordNotBetween(String value1, String value2) {
+			addCriterion("key_word not between", value1, value2, "keyWord");
 			return (Criteria) this;
 		}
 

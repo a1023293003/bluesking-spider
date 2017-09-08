@@ -33,7 +33,7 @@ public final class ArrayUtil {
 	 * @param flag [boolean[]]带初始化数组
 	 * @param defaultValue [boolean]默认值
 	 */
-	public static void setAllValue(boolean[] flag, boolean defaultValue) {
+	public static void setDefaultValues(boolean[] flag, boolean defaultValue) {
 		for(int i = 0; i < flag.length; i ++) {
 			flag[i] = defaultValue;
 		}

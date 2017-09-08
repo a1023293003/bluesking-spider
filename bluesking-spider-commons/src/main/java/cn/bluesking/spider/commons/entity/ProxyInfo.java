@@ -18,6 +18,11 @@ public class ProxyInfo {
 	 */
 	private Integer port = null;
 
+	/**
+	 * 有效次数
+	 */
+	private Integer status = null;
+
 	public void setProxyId(Integer proxyId) {
 		this.proxyId = proxyId;
 	}
@@ -40,6 +45,19 @@ public class ProxyInfo {
 
 	public Integer getPort() {
 		return this.port;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Integer getStatus() {
+		return this.status;
+	}
+
+	@Override
+	public String toString() {
+		return "ProxyInfo [proxyId=" + proxyId + ", ip=" + ip + ", port=" + port + ", status=" + status + "]";
 	}
 
 }
