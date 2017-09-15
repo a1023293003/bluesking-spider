@@ -24,7 +24,12 @@
 		<result column="position_address" property="positionAddress" jdbcType="VARCHAR" />
 		<result column="key_word" property="keyWord" jdbcType="VARCHAR" />
 	</resultMap>
-
+	
+	<!-- 城区信息对象 -->
+	<resultMap id="FieldsResultMap" type="cn.bluesking.spider.commons.entity.FieldsInfo" extends="BaseResultMap">
+		<result column="count" property="count" jdbcType="INTEGER" />
+	</resultMap>
+	
 	<!-- 条件从句 -->
 	<sql id="Example_Where_Clause">
 		<where>
@@ -358,6 +363,16 @@
 		<!-- #表示占位符、$表示拼接 -->
 		where
 		position_id = #{positionId, jdbcType=INTEGER} 
+	</select>
+	
+	<!-- 查询城区工作信息 -->
+	<select id="selectFieldByGroup" resultMap="FieldsResultMap">
+		select ${field}, count(*) as count from mobile_lagou_position 
+		where city = #{city} and key_word = #{keyWord}
+		<if test="workYear != null">
+			and work_year = #{workYear}
+		</if>
+		group by ${field};
 	</select>
 
 	<!-- 自定义条件的有选择性的修改某些属性，可修改主键 -->

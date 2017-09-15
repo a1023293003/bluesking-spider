@@ -1,9 +1,12 @@
 package cn.bluesking.spider.commons.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import cn.bluesking.spider.commons.entity.FieldsInfo;
 import cn.bluesking.spider.commons.entity.MobileLagouPosition;
 import cn.bluesking.spider.commons.entity.MobileLagouPositionExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface MobileLagouPositionMapper {
 
@@ -63,6 +66,16 @@ public interface MobileLagouPositionMapper {
 	 */
 	MobileLagouPosition selectByPrimaryKey(@Param("positionId") Integer positionId);
 
+	/**
+	 * 获取指定字段统计信息
+	 * @param field [String]字段
+	 * @param city [String]城市
+	 * @param keyWord [String]关键字
+	 * @param workYear [String]工作经验
+	 * @return
+	 */
+	List<FieldsInfo> selectFieldByGroup(@Param("field") String field, @Param("city") String city, @Param("keyWord") String keyWord, @Param("workYear") String workYear);
+	
 	/**
 	 * 自定义条件的有选择性的修改某些属性，只修改不为空的属性
 	 *

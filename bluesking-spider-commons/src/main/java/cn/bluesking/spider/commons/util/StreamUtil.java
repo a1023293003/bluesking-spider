@@ -43,6 +43,27 @@ public final class StreamUtil {
 	}
 
 	/**
+	 * 从输入流中获取字符串,每行数据后面加上一个\n回车符
+	 * @param is [InputStream]输入流
+	 * @return
+	 */
+	public static String getStringWithLF(InputStream is) {
+		StringBuilder sBuilder = new StringBuilder();
+		try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			String line;
+			while((line = reader.readLine()) != null) {
+				sBuilder.append(line + "\n");
+			}
+			reader.close();
+		} catch (Exception e) {
+			_LOG.error("获取字符串出错！", e);
+			throw new RuntimeException(e);
+		}
+		return sBuilder.toString();
+	}
+	
+	/**
 	 * 将输入流复制到输出流
 	 * @param inputStream [InputStream]输入流
 	 * @param outputStream [OutputStream]输出流

@@ -1,24 +1,72 @@
 package cn.bluesking.spider.mobile.lagou.test;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
-import org.apache.ibatis.session.SqlSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import cn.bluesking.spider.commons.entity.ProxyInfo;
-import cn.bluesking.spider.commons.helper.MybatisHelper;
-import cn.bluesking.spider.commons.mapper.ProxyInfoMapper;
+import sun.reflect.CallerSensitive;
 
-public class TestDemo {
-
-	public static void main(String[] args) {
-		SqlSession session = MybatisHelper.getSessionFactory().openSession();
-		ProxyInfoMapper mapper = session.getMapper(ProxyInfoMapper.class);
-		List<ProxyInfo> proxys = mapper.selectTopProxys(20);
-		for(ProxyInfo proxy : proxys) {
-			System.out.println(proxy.toString());
+@SuppressWarnings("restriction")
+class TestDemoInterface {
+	
+	@CallerSensitive
+	static void tt() {
+//		Class<?> cls = Reflection.getCallerClass(2);
+//		System.out.println(cls);
+		StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
+		for(StackTraceElement ste : stElements) {
+			System.out.println(ste.getClassName());
 		}
-		session.commit();
-		session.close();
+	}
+}
+@SuppressWarnings({ "unchecked", "rawtypes" })
+public class TestDemo {
+	/**
+	 * slf4j日志配置
+	 */
+	private static final Logger _LOG = LoggerFactory.getLogger(TestDemo.class);
+	
+	public static int demo(final List list, final int testCount) throws InterruptedException {
+		ThreadGroup group = new ThreadGroup(list.getClass().getName() + "@" + list.hashCode()); 
+		final Random rand = new Random(); 
+		
+		Runnable listAppender = new Runnable() {
+			public void run() {
+				try {
+					Thread.sleep(rand.nextInt(2));
+				} catch (InterruptedException e) {
+					return; 
+				} 
+				list.add("0"); 
+			}
+		}; 
+		
+		for (int i = 0; i < testCount; i++) {
+			new Thread(group, listAppender, "InsertList-" + i).start(); 
+		}
+		
+		while (group.activeCount() > 0) {
+			Thread.sleep(10); 
+		}
+		
+		return list.size(); 
+	}
+	
+	public static void main(String[] args) throws InterruptedException {
+		List unsafeList = new ArrayList(); 
+		List safeList = Collections.synchronizedList(new ArrayList()); 
+		final int N = 10000; 
+		for (int i = 0; i < 10; i++) {
+			unsafeList.clear(); 
+			safeList.clear(); 
+			int unsafeSize = demo(unsafeList, N); 
+			int safeSize = demo(safeList, N); 
+			System.out.println("unsafe/safe: " + unsafeSize + "/" + safeSize); 
+		}
 	}
 	
 }

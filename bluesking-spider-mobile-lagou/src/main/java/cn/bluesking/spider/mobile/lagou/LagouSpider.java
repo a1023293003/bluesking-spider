@@ -32,7 +32,7 @@ public class LagouSpider {
 	private static final Logger _LOG = LoggerFactory.getLogger(LagouSpider.class);
 	
 	public static void main(String[] args) throws IOException {
-		String[] cities = {"深圳"};
+		String[] cities = {"深圳", "广州"};
 		String[] keyWords = {"Java", "Web前端"};
 		for(String keyWord : keyWords) {
 			for(String city : cities) {
