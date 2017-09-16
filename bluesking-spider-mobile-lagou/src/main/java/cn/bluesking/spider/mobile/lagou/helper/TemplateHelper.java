@@ -45,6 +45,9 @@ public class TemplateHelper {
 	/** slf4j日志配置 */
 	private static final Logger _LOG = LoggerFactory.getLogger(TemplateHelper.class);
 
+	/** ID值 */
+	private static int ID = 1;
+	
 	/**
 	 * 提供数据,获取一个圆饼图前端代码块
 	 * @param text [String]标题
@@ -87,7 +90,8 @@ public class TemplateHelper {
 		sBuilder.append("]");
 		values[4] = sBuilder.toString();
 		return replaceKeyWord(
-				TemplateReader.getTemplate(TemplateReader.PIE_CHART), keys, values);
+				TemplateReader.getTemplate(TemplateReader.PIE_CHART), keys, values)
+				.replace("pieChart", "pieChart" + (ID ++));
 	}
 
 	/**
@@ -125,7 +129,8 @@ public class TemplateHelper {
 		values[4] = seriesName;
 		values[5] = JsonUtil.toJson(seriesData);
 		return replaceKeyWord(
-				TemplateReader.getTemplate(TemplateReader.BAR_CHART), keys, values);
+				TemplateReader.getTemplate(TemplateReader.BAR_CHART), keys, values)
+				.replace("barChart", "barChart" + (ID ++));
 	}
 	
 	/**
@@ -180,7 +185,8 @@ public class TemplateHelper {
 		sBuilder.append("]");
 		values[3] = sBuilder.toString();
 		return replaceKeyWord(
-				TemplateReader.getTemplate(TemplateReader.MULTI_BAR_CHART), keys, values);
+				TemplateReader.getTemplate(TemplateReader.MULTI_BAR_CHART), keys, values)
+				.replace("multiBarChart", "multiBarChart" + (ID ++));
 	}
 	
 	/**

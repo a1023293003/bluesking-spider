@@ -1,4 +1,4 @@
-<div id="barChart" style="width: 600px;height:400px;"></div>
+<div id="barChart" style="width: 600px;height:400px;margin: auto;"></div>
 <script>
 	var barChart = echarts.init(document.getElementById('barChart'));
 	var barChartOption = {

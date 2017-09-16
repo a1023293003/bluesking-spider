@@ -1,4 +1,4 @@
-<div id="multiBarChart" style="width: 600px;height:400px;"></div>
+<div id="multiBarChart" style="width: 600px;height:400px;margin: auto;"></div>
 <script>
 	var multiBarChart = echarts.init(document.getElementById('multiBarChart'));
 	multiBarChartOption = {

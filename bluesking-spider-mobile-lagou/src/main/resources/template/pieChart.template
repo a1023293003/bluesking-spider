@@ -1,4 +1,4 @@
-<div id="pieChart" style="width: 600px;height:400px;"></div>
+<div id="pieChart" style="width: 600px;height:400px;margin: auto;"></div>
 <script type="text/javascript">
 	// 基于准备好的dom，初始化echarts实例
 	var pieChart = echarts.init(document.getElementById('pieChart'));

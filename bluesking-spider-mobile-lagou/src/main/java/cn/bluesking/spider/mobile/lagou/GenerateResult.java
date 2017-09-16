@@ -50,9 +50,6 @@ public class GenerateResult {
 	 * @param data [String]日期
 	 */
 	public static void generateResultToHtml(String city, String keyWord, String data) {
-		String workYearPieChart = getWorkYearPieChart(city, keyWord, data);
-		String districtBarChart = getDistrictBarChart(city, keyWord, data);
-		String DWmultiBarChart = getDistrictAndKeyWorkMultiBarChart(city, keyWord);
 		PrintWriter pw = null;
 		try {
 			pw = getPrintWriter(city, keyWord, data);
@@ -60,23 +57,16 @@ public class GenerateResult {
 					"<html>\r\n" + 
 					"<head>\r\n" + 
 					"    <meta charset=\"utf-8\">\r\n" + 
-					"    <title>ECharts</title>\r\n" + 
+					"    <title>结果分析</title>\r\n" + 
 					"    <!-- 引入 echarts.js -->\r\n" + 
 					"    <script src=\"../js/echarts.min.js\"></script>\r\n" + 
-					"   <style>\r\n" + 
-					"    	h2 {\r\n" + 
-					"    		text-align: center;\r\n" + 
-					"    	}\r\n" + 
-					"    	#pieChart, #barChart, #multiBarChart {\r\n" + 
-					"    		margin: auto;\r\n" + 
-					"    	}\r\n" + 
-					"    </style>\r\n" + 
 					"</head>\r\n" + 
 					"<body>\r\n" + 
-					"	<h2>以下数据均爬取自拉勾网</h2>\r\n");
-			pw.println(workYearPieChart);
-			pw.println(districtBarChart);
-			pw.println(DWmultiBarChart);
+					"	<h2 style=\"text-align: center;\">以下数据均爬取自拉勾网</h2>\r\n");
+			pw.println(getWorkYearPieChart(city, keyWord, data));
+			pw.println(getDistrictBarChart(city, keyWord, data));
+			pw.println(getDistrictAndKeyWorkMultiBarChart(city, keyWord));
+			pw.println(getSalaryBarChart(city, keyWord, data));
 			pw.print("</body>\r\n" + 
 					"</html>");
 			pw.flush();
@@ -107,6 +97,42 @@ public class GenerateResult {
 			file.createNewFile();
 		}
 		return new PrintWriter(fileName, "UTF-8");
+	}
+	
+	/**
+	 * 各个工作经验的底薪分布
+	 * @param city [String]城市
+	 * @param keyWord [String]关键字
+	 * @param data [String]日期
+	 * @return
+	 */
+	private static String getSalaryBarChart(String city, String keyWord, String data) {
+		StringBuilder sBuilder = new StringBuilder();
+		// 获取数据库会话
+		SqlSession session = MybatisHelper.getSessionFactory().openSession();
+		MobileLagouPositionMapper mapper = session.getMapper(MobileLagouPositionMapper.class);
+		// 获取工作经验类别及其职位数量
+		List<FieldsInfo> fieldInfos = mapper.selectFieldByGroup("work_year", city, keyWord, null);
+		String[] workYears = new String[fieldInfos.size()];
+		for(int i = 0; i < fieldInfos.size(); i ++) {
+			workYears[i] = fieldInfos.get(i).getWorkYear();
+		}
+		// 遍历工作经验
+		for(String workYear : workYears) {
+			// 查询当前工作经验底薪分布
+			List<FieldsInfo> minSalarys = mapper.selectFieldByGroup("min_salary", city, keyWord, workYear);
+			String[] salarys = new String[minSalarys.size()];
+			Integer[] counts = new Integer[salarys.length];
+			for(int i = 0; i < minSalarys.size(); i ++) {
+				salarys[i] = minSalarys.get(i).getMinSalary() + "k";
+				counts[i] = minSalarys.get(i).getCount();
+			}
+			sBuilder.append(TemplateHelper.getBarChart(city + keyWord + workYear + "工作经验底薪分布", 
+					data, salarys, "单位:k", "底薪", counts) + "\n");
+		}
+		session.commit();
+		session.close();
+		return sBuilder.toString();
 	}
 	
 	/**
