@@ -9,7 +9,6 @@
 	<!-- 子模块 -->
 	<modules>
 		<module>bluesking-spider-commons</module>
-		<module>bluesking-spider-lagou-phone</module>
 		<module>bluesking-spider-proxyTool</module>
 		<module>bluesking-spider-mobile-lagou</module>
 	</modules>

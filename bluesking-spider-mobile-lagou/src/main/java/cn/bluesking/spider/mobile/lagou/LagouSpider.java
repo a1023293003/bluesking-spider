@@ -33,7 +33,7 @@ public class LagouSpider {
 	
 	public static void main(String[] args) throws IOException {
 		String[] cities = {"深圳", "广州"};
-		String[] keyWords = {"Java", "Web前端"};
+		String[] keyWords = {"Java"};
 		for(String keyWord : keyWords) {
 			for(String city : cities) {
 				getJobs(city, keyWord);
@@ -60,7 +60,8 @@ public class LagouSpider {
 		try {
 			content = HttpUtil.httpBrowserGet(url);
 			// 截取并解析json数据
-			content = RegexUtil.regexString(content, "\"totalCount\":\"([\\d]+?)\"").get(0);
+			content = RegexUtil.regexString(content, 
+					"\"totalCount\":\"([\\d]+?)\"").get(0);
 		} catch (IOException e) {
 			_LOG.error("获取数据总数失败！" + e.getMessage());
 			e.printStackTrace();

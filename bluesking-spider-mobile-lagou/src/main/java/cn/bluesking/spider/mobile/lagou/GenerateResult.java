@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -31,6 +34,7 @@ public class GenerateResult {
 	private static String PATH;
 	static {
 		try {
+			// 获取输出路径
 			PATH = GenerateResult.class.
 					getClassLoader().getResource("").toURI().getPath() + "result";
 		} catch (URISyntaxException e) {
@@ -128,7 +132,7 @@ public class GenerateResult {
 				counts[i] = minSalarys.get(i).getCount();
 			}
 			sBuilder.append(TemplateHelper.getBarChart(city + keyWord + workYear + "工作经验底薪分布", 
-					data, salarys, "单位:k", "底薪", counts) + "\n");
+					data, salarys, "单位:k", "职位数量", counts) + "\n");
 		}
 		session.commit();
 		session.close();
@@ -205,19 +209,33 @@ public class GenerateResult {
 		// 获取城区类别及其职位数量
 		List<FieldsInfo> districtInfos = mapper.selectFieldByGroup("district", city, keyWord, null);
 		String[] districts = new String[districtInfos.size()];
+		Map<String, Integer> districtIndex = new HashMap<>();
 		for(int i = 0; i < districtInfos.size(); i ++) {
 			districts[i] = StringUtil.isEmpty(districtInfos.get(i).getDistrict()) ?
-					"未爬取到详细城区" : districtInfos.get(i).getDistrict();;
+					"未爬取到详细城区" : districtInfos.get(i).getDistrict();
+			System.out.println(districts[i] + ":" + i);
+			districtIndex.put(districts[i], i);
 		}
 		// 职位分布数值[经验][城区]
 		Integer[][] counts = new Integer[workYears.length][districts.length];
+		// 初始化数组
+		for(int i = 0; i < workYears.length; i ++) {
+			for(int k = 0; k < districts.length; k ++) {
+				counts[i][k] = 0;
+			}
+		}
 		for(int i = 0; i < workYears.length; i ++) {
 			// 获取指定工作经验要求的城区类别及其职位数量分布
 			List<FieldsInfo> districtAndCount = mapper.
 					selectFieldByGroup("district", city, keyWord, workYears[i]);
 			for(int k = 0; k < districtAndCount.size(); k ++) {
-				counts[i][k] = districtAndCount.get(k).getCount();
+				String district = StringUtil.isEmpty(districtAndCount.get(k).getDistrict()) ?
+						"未爬取到详细城区" : districtAndCount.get(k).getDistrict();
+				System.out.println(district + ":" + districtIndex.get(district));
+				int index = districtIndex.get(district);
+				counts[i][index] = districtAndCount.get(k).getCount();
 			}
+			System.out.println(Arrays.toString(counts[i]));
 		}
 		session.commit();
 		session.close();
@@ -239,7 +257,7 @@ public class GenerateResult {
 	}
 	
 	public static void main(String[] args) throws URISyntaxException {
-		generateResultToHtml("深圳", "Java", "2017年8月29日");
-		generateResultToHtml("广州", "Java", "2017年8月29日");
+		generateResultToHtml("深圳", "Java", "2017年10月14日");
+		generateResultToHtml("广州", "Java", "2017年10月14日");
 	}
 }
