@@ -30,13 +30,16 @@ public class BugngProxyGetter implements ProxyGetter {
 	public Long getInterval() {
 		return interval;
 	}
+	
+   /** 每次从数据库获取代理数量 */
+    private static final int PROXY_NUM = 50;
 
 	@Override
 	public List<Proxy> getProxys() {
 		try {
 			_LOG.debug("===============进入虫代理爬取模块===============");
 			_LOG.debug("当前代理队列中元素总数:[" + ProxyProvider.size() + "]");
-			String content = HttpUtil.httpBrowserGet("http://www.bugng.com/api/getproxy/txt?num=100&anonymity=1&type=0");
+			String content = HttpUtil.httpBrowserGet("http://www.bugng.com/api/getproxy/txt?num=" + PROXY_NUM + "&anonymity=1&type=0");
 			List<String> ips = RegexUtil.regexString(content, "(\\d+?.\\d+?.\\d+?.\\d+?):");
 			List<String> ports = RegexUtil.regexString(content, ":(\\d+?)@");
 			for(int i = 0; i < ips.size(); i++) {

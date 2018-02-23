@@ -1,17 +1,10 @@
 package cn.bluesking.spider.mobile.lagou;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.bluesking.spider.commons.entity.MobileLagouPositionExample;
-import cn.bluesking.spider.commons.entity.MobileLagouPositionExample.Criteria;
-import cn.bluesking.spider.commons.helper.MybatisHelper;
-import cn.bluesking.spider.commons.mapper.MobileLagouPositionMapper;
 import cn.bluesking.spider.commons.util.CaseUtil;
 import cn.bluesking.spider.commons.util.CodecUtil;
 import cn.bluesking.spider.commons.util.HttpUtil;

@@ -1,6 +1,5 @@
 package cn.bluesking.spider.proxyTool;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.List;
@@ -12,9 +11,6 @@ import org.slf4j.LoggerFactory;
 import cn.bluesking.spider.commons.entity.ProxyInfo;
 import cn.bluesking.spider.commons.helper.MybatisHelper;
 import cn.bluesking.spider.commons.mapper.ProxyInfoMapper;
-import cn.bluesking.spider.commons.util.CaseUtil;
-import cn.bluesking.spider.commons.util.HttpUtil;
-import cn.bluesking.spider.commons.util.RegexUtil;
 
 /**
  * 数据库代理获取器
@@ -28,7 +24,7 @@ public class DatabaseProxyGetter implements ProxyGetter {
 	private static final Logger _LOG = LoggerFactory.getLogger(DatabaseProxyGetter.class);
 	
 	/** 爬取间隔时间 */
-	private Long interval = 4 * 60 * 1000L;
+	private Long interval = 3 * 60 * 1000L;
 	
 	@Override
 	public Long getInterval() {
@@ -36,7 +32,7 @@ public class DatabaseProxyGetter implements ProxyGetter {
 	}
 
 	/** 每次从数据库获取代理数量 */
-	private static final int PROXY_NUM = 50;
+	private static final int PROXY_NUM = 100;
 	
 	@Override
 	public List<Proxy> getProxys() {

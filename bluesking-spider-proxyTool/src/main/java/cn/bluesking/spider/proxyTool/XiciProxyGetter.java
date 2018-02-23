@@ -3,7 +3,6 @@ package cn.bluesking.spider.proxyTool;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import cn.bluesking.spider.commons.util.CaseUtil;
 import cn.bluesking.spider.commons.util.HttpUtil;
 import cn.bluesking.spider.commons.util.RegexUtil;
-import cn.bluesking.spider.proxyTool.helper.ProxyHelper;
 
 /**
  * 西刺代理获取器

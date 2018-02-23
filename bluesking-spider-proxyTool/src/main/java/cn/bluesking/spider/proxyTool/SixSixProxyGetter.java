@@ -29,12 +29,15 @@ public class SixSixProxyGetter implements ProxyGetter {
 	public Long getInterval() {
 		return interval;
 	}
-
+	
+   /** 每次从数据库获取代理数量 */
+    private static final int PROXY_NUM = 100;
+    
 	public List<Proxy> getProxys() {
 		try {
 			_LOG.debug("===============进入66代理爬取模块===============");
 			_LOG.debug("当前代理队列中元素总数:[" + ProxyProvider.size() + "]");
-			String content = HttpUtil.httpBrowserGet("http://www.66ip.cn/nmtq.php?getnum=50&isp=0&anonymoustype=0&start=&ports=&export=&ipaddress=&area=1&proxytype=2&api=66ip");
+			String content = HttpUtil.httpBrowserGet("http://www.66ip.cn/nmtq.php?getnum=" + PROXY_NUM + "&isp=0&anonymoustype=0&start=&ports=&export=&ipaddress=&area=1&proxytype=2&api=66ip");
 			List<String> ips = RegexUtil.regexString(content, "(\\d+?.\\d+?.\\d+?.\\d+?):");
 			List<String> ports = RegexUtil.regexString(content, ":(\\d+?)");
 			for(int i = 0; i < ips.size(); i++) {

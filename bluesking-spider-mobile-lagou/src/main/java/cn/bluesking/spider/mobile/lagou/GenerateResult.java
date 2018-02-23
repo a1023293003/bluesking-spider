@@ -257,7 +257,7 @@ public class GenerateResult {
 	}
 	
 	public static void main(String[] args) throws URISyntaxException {
-		generateResultToHtml("深圳", "Java", "2017年10月14日");
-		generateResultToHtml("广州", "Java", "2017年10月14日");
+		generateResultToHtml("深圳", "Java", "2018年2月23日");
+		generateResultToHtml("广州", "Java", "2018年2月23日");
 	}
 }
