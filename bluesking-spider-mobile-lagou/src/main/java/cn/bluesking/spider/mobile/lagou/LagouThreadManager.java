@@ -19,7 +19,7 @@ import cn.bluesking.spider.commons.util.ArrayUtil;
 public class LagouThreadManager {
 
 	/** 爬取结束标记数组 */
-	private volatile boolean[] flag = null;
+	private volatile Boolean[] flag = null;
 	
 	/** 线程数组 */
 	private LagouSpiderThread[] threadArray = null;
@@ -63,9 +63,9 @@ public class LagouThreadManager {
 		session.close();
 		// 创建线程数组和标记数组
 		threadArray = new LagouSpiderThread[threadNum];
-		flag = new boolean[threadNum];
+		flag = new Boolean[threadNum];
 		// 初始化标记数组
-		ArrayUtil.setDefaultValues(flag, false);
+		ArrayUtil.setDefaultValues(flag, Boolean.FALSE);
 		// 初始化进程数组并启动线程
 		for(int i = 0; i < threadNum; i ++) {
 			threadArray[i] = new LagouSpiderThread(i + 1, i, this);
@@ -168,7 +168,7 @@ public class LagouThreadManager {
 	}
 
 	/** 返回爬虫完成状态标记 */
-	public boolean[] getFlag() {
+	public Boolean[] getFlag() {
 		return flag;
 	}
 	
@@ -208,6 +208,6 @@ public class LagouThreadManager {
 	 * @return
 	 */
 	public boolean isNotEnd() {
-		return ArrayUtil.ContainsValue(flag, false);
+		return ArrayUtil.indexOf(flag, Boolean.FALSE) != -1;
 	}
 }

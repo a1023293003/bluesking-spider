@@ -1,6 +1,5 @@
 package cn.bluesking.spider.proxyTool.helper;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ public final class ProxyHelper {
 				_LOG.debug("可用代理:[" + ips.get(i) + ":" + ports.get(i) + "]");
 				ProxyProvider.add(proxy);
 				proxys.add(proxy);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				_LOG.debug("连接失败,代理不可用!");
 			}
 		}

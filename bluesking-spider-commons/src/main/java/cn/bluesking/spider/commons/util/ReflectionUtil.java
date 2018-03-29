@@ -1,10 +1,10 @@
 package cn.bluesking.spider.commons.util;
 
-import java.lang.reflect.Field;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 反射工具类
@@ -12,84 +12,56 @@ import org.slf4j.LoggerFactory;
  * @author 随心
  *
  */
-public final class ReflectionUtil {
+public class ReflectionUtil {
 
-	/**
-	 * slf4j日志配置
-	 */
-	private static final Logger _LOG = LoggerFactory.getLogger(ReflectionUtil.class);
-	
-	/**
-	 * 创建实例
-	 * 
-	 * @param cls [Class<?>]带创建实例类Class
-	 * @return
-	 */
-	public static <T> T newInstance(Class<T> cls) {
-		T instance;
-		try {
-			instance = cls.newInstance();
-		} catch(Exception e) {
-			_LOG.error("创建实例失败！", e);
-			throw new RuntimeException(e);
-		}
-		return instance;
-	}
-	
-	/**
-	 * 创建实例
-	 * 
-	 * @param className [String]带创建实例类Class全路径
-	 * @return
-	 */
-	public static Object newInstance(String className) {
-		Object instance;
-		try {
-			Class<?> cls = Class.forName(className);
-			instance = cls.newInstance();
-		} catch(Exception e) {
-			_LOG.error("创建实例失败！", e);
-			throw new RuntimeException(e);
-		}
-		return instance;
-	}
-	
-	/**
-	 * 调用方法
-	 * 
-	 * @param obj
-	 * @param method
-	 * @param args
-	 * @return
-	 */
-	public static Object invokeMethod(Object obj, Method method, Object... args) {
-		Object result;
-		try {
-			// 给予访问权限
-			method.setAccessible(true);
-			result = method.invoke(obj, args);
-		} catch (Exception e) {
-			_LOG.error("调用方法错误！", e);
-			throw new RuntimeException(e);
-		}
-		return result;
-	}
-
-	/**
-	 * 设置成员变量的值
-	 * 
-	 * @param obj
-	 * @param field
-	 * @param value
-	 */
-	public static void setField(Object obj, Field field, Object value) {
-		try {
-			// 给予访问权限
-			field.setAccessible(true);
-			field.set(obj, value);
-		} catch (Exception e) {
-			_LOG.error("设置成员变量的值失败！", e);
-			throw new RuntimeException(e);
-		}
-	}
+    /**
+     * 获取目标类中被指定注解注解的方法
+     * 
+     * @param targetClass     [Class<?>]目标类Class
+     * @param annotationClass [Class<? extends Annotation>]注解类Class
+     * @return [List<Method>]返回目标类中被指定注解注解的方法数组
+     */
+    public static List<Method> getMethodByAnnotation(
+            Class<?> targetClass, Class<? extends Annotation> annotationClass) {
+        Method[] methods = targetClass.getDeclaredMethods();
+        List<Method> result = new ArrayList<Method>(methods.length);
+        for (Method method : methods) {
+            if (method.isAnnotationPresent(annotationClass)) {
+                result.add(method);
+            }
+        }
+        return result;
+    }
+    
+    /**
+     * 调用静态无参方法
+     * 
+     * @param method [Method]目标方法
+     * @throws Exception 
+     */
+    public static void invokeStaticMethodWithoutArgs(Method method) 
+            throws Exception {
+        try {
+            method.invoke(null);
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            throw e;
+        }
+    }
+    
+    /**
+     * 调用静态方法
+     * 
+     * @param method [Method]目标方法
+     * @param args   [Object[]]方法参数
+     * @throws Exception 
+     */
+    public static void invokeStaticMethod(Method method, Object... args) 
+            throws Exception {
+        try {
+            method.invoke(null, args);
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            throw e;
+        }
+    }
+    
 }

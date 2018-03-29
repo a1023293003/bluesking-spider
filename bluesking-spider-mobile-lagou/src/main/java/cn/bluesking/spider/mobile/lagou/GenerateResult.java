@@ -37,6 +37,7 @@ public class GenerateResult {
 			// 获取输出路径
 			PATH = GenerateResult.class.
 					getClassLoader().getResource("").toURI().getPath() + "result";
+			System.out.println("path :" + PATH);
 		} catch (URISyntaxException e) {
 			try {
 				PATH = GenerateResult.class.
@@ -257,7 +258,7 @@ public class GenerateResult {
 	}
 	
 	public static void main(String[] args) throws URISyntaxException {
-		generateResultToHtml("深圳", "Java", "2018年2月23日");
-		generateResultToHtml("广州", "Java", "2018年2月23日");
+		generateResultToHtml("深圳", "Java", "2018年3月29日");
+		generateResultToHtml("广州", "Java", "2018年3月29日");
 	}
 }

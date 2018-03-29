@@ -10,23 +10,22 @@ import org.slf4j.LoggerFactory;
  *
  */
 public final class PropsUtil {
-	
-	/**
-	 * slf4j日志配置
-	 */
-	private static final Logger _LOG = LoggerFactory.getLogger(PropsUtil.class);
+    
+    /** slf4j日志配置 */
+    private static final Logger _LOG = LoggerFactory.getLogger(PropsUtil.class);
 
-	/**
-	 * 读取配置文件
-	 * 
-	 * @param path [String]配置文件路径
-	 * @return [ConfigParse]配置文件对象
-	 */
-	public static ConfigParser loadProps(String path) {
-		try {
-			return new ConfigParser(path);
-		} catch (Exception e) {
-			return null;
-		}
-	}
+    /**
+     * 读取配置文件
+     * 
+     * @param path [String]配置文件路径
+     * @return [ConfigParse]配置文件对象
+     */
+    public static ConfigParser loadProps(String path) {
+        try {
+            return new ConfigParser(path);
+        } catch (Exception e) {
+            _LOG.info("读取配置文件失败 ！", e);
+            return null;
+        }
+    }
 }

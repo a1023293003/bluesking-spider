@@ -55,9 +55,4 @@ public class ProxyInfo {
 		return this.status;
 	}
 
-	@Override
-	public String toString() {
-		return "ProxyInfo [proxyId=" + proxyId + ", ip=" + ip + ", port=" + port + ", status=" + status + "]";
-	}
-
 }

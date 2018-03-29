@@ -98,14 +98,6 @@
 		port,
 		status
 	</sql>
-	
-	<!-- 抽取出复用率最高的前n个代理 -->
-	<select id="selectTopProxys" resultMap="BaseResultMap">
-		select * from 
-			(select proxy_id, ip, port, count(*) as status from proxy_info group by ip, port) t 
-		order by t.status desc limit #{num};
-	</select>
-	
 	<!-- 统计符合自定义条件的数据个数 -->
 	<select id="countByExample" parameterType="cn.bluesking.spider.commons.entity.ProxyInfoExample"
 		resultType="java.lang.Integer">
