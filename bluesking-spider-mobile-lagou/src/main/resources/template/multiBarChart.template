@@ -1,51 +1,51 @@
 <div id="multiBarChart" style="width: 600px;height:400px;margin: auto;"></div>
 <script>
-	var multiBarChart = echarts.init(document.getElementById('multiBarChart'));
-	multiBarChartOption = {
-		tooltip : {
-			trigger: 'axis',
-			axisPointer: {
-				type: 'shadow',
-				label: {
-					show: true
-				}
-			}
-		},
-		toolbox: {
-			show : true,
-			feature : {
-				mark : {show: true},
-				dataView : {show: true, readOnly: false},
-				magicType: {show: true, type: ['line', 'bar']},
-				restore : {show: true},
-				saveAsImage : {show: true}
-			}
-		},
-		calculable : true,
-		legend: {
-			data:${legend.data},
-			selectedMode:'single',
-			itemGap: 5
-		},
-		grid: {
-			top: '12%',
-			left: '1%',
-			right: '10%',
-			containLabel: true
-		},
-		xAxis: [
-			{
-				type : 'category',
-				data : ${xAxis.data}
-			}
-		],
-		yAxis: [
-			{
-				type : 'value',
-				name : '${yAxis.name}'
-			}
-		],
-		series : ${series}
-	};
-	multiBarChart.setOption(multiBarChartOption);
+    var multiBarChart = echarts.init(document.getElementById('multiBarChart'));
+    multiBarChartOption = {
+        tooltip : {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow',
+                label: {
+                    show: true
+                }
+            }
+        },
+        toolbox: {
+            show : true,
+            feature : {
+                mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar']},
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        calculable : true,
+        legend: {
+            data:${legend.data},
+            selectedMode:'single',
+            itemGap: 5
+        },
+        grid: {
+            top: '12%',
+            left: '1%',
+            right: '10%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type : 'category',
+                data : ${xAxis.data}
+            }
+        ],
+        yAxis: [
+            {
+                type : 'value',
+                name : '${yAxis.name}'
+            }
+        ],
+        series : ${series}
+    };
+    multiBarChart.setOption(multiBarChartOption);
 </script>

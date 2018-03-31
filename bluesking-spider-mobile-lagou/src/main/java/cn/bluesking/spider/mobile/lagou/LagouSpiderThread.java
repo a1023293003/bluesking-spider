@@ -184,7 +184,7 @@ public class LagouSpiderThread extends Thread {
         String salary = position.getSalary();
         try {
             // 薪资10k以上就把薪资上下限都设置为10k
-            if (salary.indexOf("以上") != -1) {
+            if (salary.indexOf("以上") != -1 || salary.indexOf("+") != -1) {
                 Integer salaryNum = Integer.parseInt(RegexUtil.regexString(salary, "([\\d]+?)[kK]").get(0));
                 position.setMaxSalary(salaryNum);
                 position.setMinSalary(salaryNum);
@@ -200,7 +200,7 @@ public class LagouSpiderThread extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(salary);
-            throw new RuntimeException("解析薪资范围出错！");
+            throw new RuntimeException("解析薪资范围出错！" + position.getSalary());
         }
     }
     

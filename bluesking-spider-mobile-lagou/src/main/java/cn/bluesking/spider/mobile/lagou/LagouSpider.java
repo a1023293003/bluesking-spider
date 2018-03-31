@@ -1,6 +1,8 @@
 package cn.bluesking.spider.mobile.lagou;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +26,15 @@ public class LagouSpider {
     private static final Logger _LOG = LoggerFactory.getLogger(LagouSpider.class);
     
     public static void main(String[] args) throws IOException {
-        String[] cities = {"深圳", "广州"};
-        String[] keyWords = {"Java"};
+        String[] cities = {"深圳", "广州", "杭州", "上海", "北京"};
+        String[] keyWords = {"Java", "前端", "python", "go", "c++"};
+        String date = new SimpleDateFormat("yyyy年MM月dd日").format(new Date());
         for(String keyWord : keyWords) {
             for(String city : cities) {
+                // 获取数据
                 getJobs(city, keyWord);
+                // 生成结果页面
+                GenerateResult.generateResultToHtml(city, keyWord, date);
             }
         }
     }

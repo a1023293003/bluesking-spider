@@ -31,7 +31,18 @@ public final class RegexUtil {
      * @return [String]指定内容
      */
     public static String regexAString(String str, String patternStr) {
-        List<String> res = regexString(str, patternStr, 1);
+        return regexAString(str, patternStr, 1);
+    }
+    
+    /**
+     * 正则匹配截取第一条指定内容
+     * @param str        [String]总内容
+     * @param patternStr [String]正则表达式
+     * @param group      [int]取出正则表达式第几组数据
+     * @return [String]指定内容
+     */
+    public static String regexAString(String str, String patternStr, int group) {
+        List<String> res = regexString(str, patternStr, group);
         if(CollectionUtil.isNotEmpty(res)) {
             return res.get(0);
         } else {

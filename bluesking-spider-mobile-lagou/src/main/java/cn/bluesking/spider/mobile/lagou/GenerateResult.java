@@ -133,7 +133,7 @@ public class GenerateResult {
 				counts[i] = minSalarys.get(i).getCount();
 			}
 			sBuilder.append(TemplateHelper.getBarChart(city + keyWord + workYear + "工作经验底薪分布", 
-					data, salarys, "单位:k", "职位数量", counts) + "\n");
+					data, salarys, "职位数量", "职位数量", counts) + "\n");
 		}
 		session.commit();
 		session.close();
