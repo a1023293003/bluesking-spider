@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL，如果设置为WARN，则低于WARN的信息都不会输出 -->
+<!-- scan:当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true -->
+<!-- scanPeriod:设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。 -->
+<!-- debug:当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。 -->
+<!-- configuration 子节点为 appender、logger、root -->
+<configuration  scan="true" scanPeriod="60 seconds" debug="false">
+    <!-- ================================================================================== -->
+    <!-- 环境名称 -->
+    <!-- ================================================================================== -->
+
+    <contextName>${PROJECT_NAME}</contextName>
+
+    <!-- ================================================================================== -->
+    <!-- 第三方包日志级别配置 -->
+    <!-- ================================================================================== -->
+
+    <!-- ================================================================================== -->
+    <!-- 常量配置 -->
+    <!-- ================================================================================== -->
+
+    <!-- 默认环境名称 -->
+    <property name="PROJECT_NAME" value="bluesking-spider" />
+    <!-- name的值是变量的名称，value的值时变量定义的值。通过定义的值会被插入到logger上下文中。定义变量后，可以使“${}”来使用变量。 -->
+    <property name="LOG_HOME" value="logs" />
+    <!-- 单个日志文件分隔压缩触发上限 -->
+    <property name="MAX_FILE_SIZE" value = "64MB" />
+    <!-- 最大保存时间 -->
+    <property name="MAX_HISTORY" value="180"/>
+    <!-- 一类日志总保存量上限 -->
+    <property name="TOTAL_SIZE_CAP" value="5GB" />
+    <!-- 异步缓冲队列的深度，该值会影响性能，默认值为256 -->
+    <property name="QUEUE_SIZE" value="512" />
+    <!-- 根节点日志级别 -->
+    <property name="ROOT_LOG_LEVEL" value="INFO" />
+    <!-- 通用日志输出格式 -->
+    <!--格式化输出：%d表示日期，%-5level：级别从左显示5个字符宽度，%thread表示线程名，%logger输出日志的logger名，%msg：日志消息，%n是换行符 -->
+    <property name="COMMON_PATTERN" 
+        value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level [%thread] %logger{50}.%method : %msg ~\\(%file:%line\\)%n" />
+<!--         value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level [%thread] %logger{80}.%method\\(%file:%line\\) - %msg%n" /> -->
+<!--         value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level [%thread] %logger{80} : %msg%n" /> -->
+<!--         value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level [%thread] %logger{80}.%method\\(%line\\) : %msg%n" /> -->
+    <!-- 通用编码格式 -->
+    <property name="COMMON_CHARSET" value="UTF-8" />
+
+    <!-- ================================================================================== -->
+    <!-- 控制台日志输出配置 -->
+    <!-- ================================================================================== -->
+
+    <!-- magenta: 洋红 -->
+    <!-- boldMagenta: 粗红-->
+    <!-- cyan: 青色 -->
+    <!-- white: 白色 -->
+    <!-- magenta: 洋红 -->
+
+    <!--输出到控制台-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <encoder>
+            <pattern>${COMMON_PATTERN}</pattern>
+            <charset>${COMMON_CHARSET}</charset>
+        </encoder>
+    </appender>
+
+    <!-- ================================================================================== -->
+    <!-- 同步日志输出配置 -->
+    <!-- ================================================================================== -->
+
+    <!--输出到文件-->
+    <!-- 归档输出DEBUG日志 -->
+    <appender name="DEBUG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 活动日志名称，记录着当前周期的实时日志，周期受fileNamePattern限制 -->
+        <file>${LOG_HOME}/log_debug.log</file>
+        <!-- 输出内容追加到已有文件末尾，默认为true -->
+        <append>true</append>
+        <!-- 此日志文件只记录debug级别的 -->
+        <!-- 可以选择使用ThresholdFilter阈值过滤器，输出比设置等级低的日志 -->
+<!--         <filter class="ch.qos.logback.classic.filter.ThresholdFilter"> -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <!-- 返回值有ACCEPT（接收）、DENY（拒绝）、NEUTRAL（中立），可以自定义策略 -->
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!-- 日志记录器的归档策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志归档 -->
+            <fileNamePattern>${LOG_HOME}/DEBUG/log_debug_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <!-- 单个文件超过上限就会被切割和压缩 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文件保留天数-->
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <!-- 日志总保存量上限 -->
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <!--日志文件输出格式-->
+        <encoder>
+            <pattern>${COMMON_PATTERN}</pattern>
+            <charset>${COMMON_CHARSET}</charset>
+        </encoder>
+    </appender>
+
+    <!-- 归档输出INFO日志 -->
+    <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 正在记录的日志文件的路径及文件名 -->
+        <file>${LOG_HOME}/log_info.log</file>
+        <!-- 输出内容追加到已有文件末尾，默认为true -->
+        <append>true</append>
+        <!-- 此日志文件只记录info级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!-- 日志记录器的归档策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 每天日志归档路径以及格式 -->
+            <fileNamePattern>${LOG_HOME}/INFO/log_info_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <!-- 单个文件超过上限就会被切割和压缩 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文件保留天数-->
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <!-- 日志总保存量上限 -->
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <!--日志文件输出格式-->
+        <encoder>
+            <pattern>${COMMON_PATTERN}</pattern>
+            <charset>${COMMON_CHARSET}</charset>
+        </encoder>
+    </appender>
+
+    <!-- 归档输出WARN日志 -->
+    <appender name="WARN_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 正在记录的日志文件的路径及文件名 -->
+        <file>${LOG_HOME}/log_warn.log</file>
+        <!-- 输出内容追加到已有文件末尾，默认为true -->
+        <append>true</append>
+        <!-- 此日志文件只记录warn级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/WARN/log-warn-%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <!-- 单个文件超过上限就会被切割和压缩 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文件保留天数-->
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <!-- 日志总保存量上限 -->
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <!--日志文件输出格式-->
+        <encoder>
+            <pattern>${COMMON_PATTERN}</pattern>
+            <charset>${COMMON_CHARSET}</charset>
+        </encoder>
+    </appender>
+
+    <!-- 归档输出ERROR日志 -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 正在记录的日志文件的路径及文件名 -->
+        <file>${LOG_HOME}/log_error.log</file>
+        <!-- 输出内容追加到已有文件末尾，默认为true -->
+        <append>true</append>
+        <!-- 此日志文件只记录error级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!-- 日志记录器的归档策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/ERROR/log_error_%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <!-- 单个文件超过上限就会被切割和压缩 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文件保留天数-->
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <!-- 日志总保存量上限 -->
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <!--日志文件输出格式-->
+        <encoder>
+            <pattern>${COMMON_PATTERN}</pattern>
+            <charset>${COMMON_CHARSET}</charset>
+        </encoder>
+    </appender>
+
+    <!-- ================================================================================== -->
+    <!-- 异步日志输出配置 -->
+    <!-- ================================================================================== -->
+
+    <appender name="ASYNC_DEBUG_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 设置不丢失日志，默认的，如果队列的80%已满，则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 队列长度 -->
+        <queueSize>${QUEUE_SIZE}</queueSize>
+        <appender-ref ref="DEBUG_FILE"/>
+    </appender>
+
+    <appender name="ASYNC_INFO_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 设置不丢失日志，默认的，如果队列的80%已满，则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 队列长度 -->
+        <queueSize>${QUEUE_SIZE}</queueSize>
+        <appender-ref ref="INFO_FILE"/>
+    </appender>
+
+    <appender name="ASYNC_WARN_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 设置不丢失日志，默认的，如果队列的80%已满，则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 队列长度 -->
+        <queueSize>${QUEUE_SIZE}</queueSize>
+        <appender-ref ref="WARN_FILE"/>
+    </appender>
+
+    <appender name="ASYNC_ERROR_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 设置不丢失日志，默认的，如果队列的80%已满，则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 队列长度 -->
+        <queueSize>${QUEUE_SIZE}</queueSize>
+        <appender-ref ref="ERROR_FILE"/>
+    </appender>
+
+    <!-- ================================================================================== -->
+    <!-- 根节点配置 -->
+    <!-- ================================================================================== -->
+
+    <!--
+        root节点是必选节点，用来指定最基础的日志输出级别，只有一个level属性
+        level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，
+        不能设置为INHERITED或者同义词NULL。默认是DEBUG
+        可以包含零个或多个元素，标识这个appender将会添加到这个logger。
+    -->
+
+    <root level="${ROOT_LOG_LEVEL}">
+        <appender-ref ref="CONSOLE" />
+<!--         <appender-ref ref="ASYNC_DEBUG_FILE" /> -->
+<!--         <appender-ref ref="ASYNC_INFO_FILE" /> -->
+<!--         <appender-ref ref="ASYNC_WARN_FILE" /> -->
+<!--         <appender-ref ref="ASYNC_ERROR_FILE" /> -->
+    </root>
+</configuration>

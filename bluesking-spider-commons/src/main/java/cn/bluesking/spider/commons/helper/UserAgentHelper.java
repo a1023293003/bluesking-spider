@@ -2,11 +2,9 @@ package cn.bluesking.spider.commons.helper;
 
 import java.lang.reflect.Field;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.bluesking.spider.commons.UserAgentConstant;
 import cn.bluesking.spider.commons.util.MathUtil;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 浏览器UserAgent属性助手类
@@ -14,39 +12,34 @@ import cn.bluesking.spider.commons.util.MathUtil;
  * @author 随心
  *
  */
+@Slf4j
 public final class UserAgentHelper {
 
-    /** slf4j日志配置 */
-    private static final Logger _LOG = LoggerFactory.getLogger(UserAgentHelper.class);
-
     /** 存储所有User-Agent的数组 */
-    private static String[] userAgents = null;
-
-    /** User-Agent最大下标 */
-    private static int length = 0;
+    private static String[] USER_AGENTS;
 
     static {
-        // 反射获取UserAgentConstant常量接口中的常量
+        // 反射获取 UserAgentConstant 常量接口中的常量
         Field[] fields = UserAgentConstant.class.getDeclaredFields();
-        length = fields.length - 1; // 计算数组最大下标
-        userAgents = new String[fields.length];
-        for (int i = 0; i < fields.length; i++) {
+        int length = fields.length;
+        assert length > 0;
+        USER_AGENTS = new String[length];
+        for (int i = 0; i < length; i ++) {
             try {
-                userAgents[i] = (String) fields[i].get(null);
+                USER_AGENTS[i] = (String) fields[i].get(null);
             } catch (Exception e) {
-                _LOG.error("User-Agent常量表初始化异常" + e.getMessage());
-                e.printStackTrace();
+                LOGGER.error("User-Agent 常量表初始化异常！" + e);
             }
         }
     }
 
     /**
-     * 随机获取一个User-Agent
+     * 随机获取一个 User-Agent。
      * 
-     * @return
+     * @return [String] 返回字符串格式的 User-Agent。
      */
     public static String getRandomUserAgent() {
-        return userAgents[MathUtil.getRandom(0, length)];
+        return USER_AGENTS[MathUtil.getRandom(0, USER_AGENTS.length)];
     }
 
 }

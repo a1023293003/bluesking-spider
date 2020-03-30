@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bluesking.spider.dao.JobMapper">
+
+    <resultMap id="jobResult" type="cn.bluesking.spider.entity.Job">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="advantage" property="advantage" jdbcType="VARCHAR" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="education" property="education" 
+            javaType="cn.bluesking.spider.entity.Education" />
+        <result column="work_experience" property="workExperience" 
+            javaType="cn.bluesking.spider.entity.WorkExperience" />
+
+        <association property="salary"
+            javaType="cn.bluesking.spider.entity.Job$Salary">
+            <result column="salary_min" property="min" />
+            <result column="salary_max" property="max" />
+        </association>
+
+        <association property="company" column="company_id" 
+            select="cn.bluesking.spider.dao.CompanyMapper.selectById">
+        </association>
+        
+        <association property="address" column="address_id" 
+            select="cn.bluesking.spider.dao.AddressMapper.selectById"></association>
+        <association property="company" column="company_id"
+            select="cn.bluesking.spider.dao.CompanyMapper.selectById" />
+    </resultMap>
+
+    <select id="selectById" resultMap="jobResult">
+        select * from job where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete j, a from job j left join address a on j.address_id = a.id where j.id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="cn.bluesking.spider.entity.Job">
+        insert ignore into job (
+            id, title, 
+            salary_min, salary_max, 
+            advantage, description, 
+            education, work_experience, 
+            company_id, address_id
+        ) values 
+        <foreach collection="array" item="item" separator=",">
+            (
+                #{item.id}, #{item.title}, 
+                #{item.salary.min}, #{item.salary.max}, 
+                #{item.advantage}, #{item.description}, 
+                #{item.education}, #{item.workExperience}
+                <choose>
+                    <when test="item.company != null">, #{item.company.id}</when>
+                    <otherwise>, null</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.address != null">, #{item.address.id}</when>
+                    <otherwise>, null</otherwise>
+                </choose>
+            )
+        </foreach>
+
+    </insert>
+
+</mapper>

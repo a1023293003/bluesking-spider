@@ -1,10 +1,9 @@
 package cn.bluesking.spider.commons.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * JSON工具类
@@ -12,10 +11,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author 随心
  *
  */
+@Slf4j
 public final class JsonUtil {
-
-    /** slf4j日志配置 */
-    private static final Logger _LOG = LoggerFactory.getLogger(JsonUtil.class);
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -35,7 +32,7 @@ public final class JsonUtil {
         try {
             json = OBJECT_MAPPER.writeValueAsString(obj);
         } catch (Exception e) {
-            _LOG.error("POJO转为JSON数据失败！", e);
+            LOGGER.error("POJO转为JSON数据失败！", e);
             throw new RuntimeException(e);
         }
         return json;
@@ -53,7 +50,7 @@ public final class JsonUtil {
         try {
             pojo = OBJECT_MAPPER.readValue(json, type);
         } catch (Exception e) {
-            _LOG.error("JSON转为POJO失败！", e);
+            LOGGER.error("JSON转为POJO失败！", e);
             throw new RuntimeException(e);
         }
         return pojo;

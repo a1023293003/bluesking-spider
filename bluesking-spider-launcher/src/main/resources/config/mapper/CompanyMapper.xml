@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bluesking.spider.dao.CompanyMapper">
+
+    <resultMap id="companyResult" type="cn.bluesking.spider.entity.Company">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="description" property="description" />
+        <result column="industry_field" property="industryField" />
+        <result column="registration_date" property="registrationDate" />
+        <result column="registered_capital" property="registeredCapital" />
+
+        <result column="company_size" property="companySize"
+            javaType="cn.bluesking.spider.entity.CompanySize" />
+
+        <collection property="addresses" column="id" 
+            ofType="cn.bluesking.spider.entity.Address"
+            select="cn.bluesking.spider.dao.AddressMapper.selectByCompanyId"></collection>
+    </resultMap>
+
+    <select id="selectById" resultMap="companyResult">
+        select * from company where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete c, cta, a from
+            company c left join company_to_address cta on c.id = cta.company_id
+                      left join address a on cta.address_id = a.id
+        where c.id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="cn.bluesking.spider.entity.Company">
+        insert ignore into company (
+            id, name, description, industry_field, company_size, 
+            registration_date, registered_capital
+        ) values 
+        <foreach collection="array" item="item" separator=",">
+            (
+                #{item.id}, #{item.name}, #{item.description}, #{item.industryField}, 
+                #{item.companySize}, #{item.registrationDate}, #{item.registeredCapital}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

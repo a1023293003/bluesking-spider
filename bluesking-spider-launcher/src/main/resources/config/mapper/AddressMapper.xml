@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bluesking.spider.dao.AddressMapper">
+
+    <resultMap id="addressResult" type="cn.bluesking.spider.entity.Address">
+        <id column="id" property="id" />
+        <result column="city" property="city" />
+        <result column="district" property="district" />
+        <result column="address" property="address" />
+        <result column="lat" property="lat" />
+        <result column="lng" property="lng" />
+    </resultMap>
+
+    <select id="selectById" resultMap="addressResult">
+        select * from address where id = #{id}
+    </select>
+
+    <select id="selectByCompanyId" resultMap="addressResult">
+        select * from address where id in(
+            select address_id from company_to_address 
+            where company_id = #{id} and id is not null)
+    </select>
+
+    <delete id="deleteById">
+        delete from address where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="cn.bluesking.spider.entity.Address">
+        insert ignore into address (id, city, district, address, lat, lng)
+        values
+        <foreach collection="array" item="item" separator=",">
+            (
+                #{item.id}, #{item.city}, #{item.district}, 
+                #{item.address}, #{item.lat}, #{item.lng}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="insertCompanyToAddress" parameterType="cn.bluesking.spider.entity.Company">
+        insert into company_to_address (id, company_id, address_id)
+        values
+        <foreach collection="company.addresses" item="item" separator=",">
+            (UUID(), #{company.id}, #{item.id})
+        </foreach>
+    </insert>
+
+</mapper>
